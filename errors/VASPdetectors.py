@@ -1,4 +1,4 @@
-import subprocess
+import subprocess, os
 def test(calc):
     print('SEARCHING FOR ERRORS')
     det = int(subprocess.Popen('grep WAAAAAAAAAGH tempout | wc -l',shell=True,stdout=subprocess.PIPE).communicate()[0])
@@ -58,3 +58,16 @@ def PSSYEVX(calc):
     else:
         return False
 
+def energyMissing():
+    #Energy cannot be extracted from OUTCAR
+    energy = int(subprocess.Popen('grep \'energy  without entropy\'  OUTCAR | tail -1 | awk \'{ print $8 }\'',shell=True,stdout=subprocess.PIPE).communicate()[0]).strip()
+    if energy == '' or not 'energy' in locals():
+        return True
+    else:
+        return False
+
+def chgMissing():
+    if not os.path.isfile('CHGCAR') or not os.path.isfile('CHG'):
+        return True
+    else:
+        return False

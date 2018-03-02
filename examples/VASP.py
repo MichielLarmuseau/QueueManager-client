@@ -39,7 +39,7 @@ cfile = cinfo['file']
 status = int(cinfo['stat'])
 inputfile = os.path.join(qdir, '/import/', str(cfile) + '.vasp')
 
-print 'THE STAT is' + str(status)
+print('THE STAT is' + str(status))
 
 #temp variable for INCAR for manual mods
 INCAR = cinfo['settings']['INCAR']

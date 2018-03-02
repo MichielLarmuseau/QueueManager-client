@@ -142,7 +142,7 @@ def getIBZKPT():
         time.sleep(1)
         i+=1
         if i == 1000:
-            print 'IBZKPT NOT GENERATED ERROR'
+            print('IBZKPT NOT GENERATED ERROR')
             sys.exit()
     genIBZKPT.terminate()
     f = open('IBZKPT', 'r')
