@@ -38,16 +38,16 @@ def modify(params):
     result = mysql_query(query)
         
     if (result == '1'):
-        print 'The calculation has been modified. Please verify.'
+        print('The calculation has been modified. Please verify.')
     elif (result == '0'):
-        print 'Nothing to modify.'
+        print('Nothing to modify.')
     else:   
-        print 'Help... Me...'
+        print('Help... Me...')
     return result 
 
 def add(filename):
     title = filename.rsplit('.',2);
-    print filename 
+    print(filename) 
     if not title[0].isdigit():
         crystal = ase.io.read(filename);
     else:

@@ -106,7 +106,7 @@ def finish():
     #end and readresults, readsettings too possibly, makecif populateresults and convert E/atom etc possibilities of using tables for chemical potentials
     #DOS and bandstructure options here too or in seperate postprocess func
     #Incorporate HTfinish, other httools should go somewhere too
-    print '',
+    print('')
     return 0
 
 def initialize(settings,hard = ''):

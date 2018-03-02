@@ -20,7 +20,7 @@ def add(material,queue,priority = '',settings = None,results = None, status = 0)
     global calcid, stat, sw
     #API conflict
     wftemplate = mysql_query('SELECT `priority`, `rtemplate`, `stemplate` FROM `workflows` WHERE `id` = (SELECT `workflow` FROM `queues` WHERE `id` = ' + str(queue) + ') AND `stat` = ' + str(status))
-    print wftemplate
+    print(wftemplate)
     if settings == None:
         settings = wftemplate['stemplate']
 
@@ -31,16 +31,16 @@ def add(material,queue,priority = '',settings = None,results = None, status = 0)
 
     if isinstance(settings, dict):
         settings = json.dumps(settings)
-        print 'Be sure to update the software type.'
+        print('Be sure to update the software type.')
     elif str(settings).isdigit():
-        print settings
+        print(settings)
         template = mysql_query('SELECT * FROM `templates` WHERE `id` = ' + str(settings))
         settings = template['template']
         software = template['software']
 
     if isinstance(results, dict):
         results = json.dumps(results)
-        print 'Be sure to update the software type.'
+        print('Be sure to update the software type.')
     elif str(results).isdigit():
         template = mysql_query('SELECT * FROM `templates` WHERE `id` = ' + str(results))
         results = template['template']
@@ -58,9 +58,9 @@ def add(material,queue,priority = '',settings = None,results = None, status = 0)
     queue = mysql_query('SELECT `id`, `name` FROM `queues` WHERE `id` = ' + str(queue))
 
     if(int(result) > 0):
-        print 'Added calculation for material ' + str(material) + ' (' + str(cid) + ') to the ' + queue['name'] + ' queue (' + str(queue['id']) + ') as calculation ' + str(cid)  + '.'
+        print('Added calculation for material ' + str(material) + ' (' + str(cid) + ') to the ' + queue['name'] + ' queue (' + str(queue['id']) + ') as calculation ' + str(cid)  + '.')
     else:
-        print 'Adding calculation for material ' + str(material) + ' to the ' + queue['name']  + ' queue (' + str(queue['id']) + ') failed.'
+        print('Adding calculation for material ' + str(material) + ' to the ' + queue['name']  + ' queue (' + str(queue['id']) + ') failed.')
     return cid
 
 def modify(params):
@@ -78,11 +78,11 @@ def modify(params):
     query = query[:-2] + ' WHERE `id` = ' + str(params['id'])
     result = int(bool(mysql_query(query)))
     if (result == 1):
-        print 'The calculation has been modified. Please verify.'
+        print('The calculation has been modified. Please verify.')
     elif (result == 0):
-        print 'Nothing to modify.'
+        print('Nothing to modify.')
     else:
-        print 'Help... Me...'
+        print('Help... Me...')
     return result
 
 def getSettings(cid = None):
@@ -127,9 +127,9 @@ def updateResults(results,cid = None):
 def remove(cid):
     result = mysql_query('DELETE FROM `calculations` WHERE `id` = ' + str(cid))
     if (result == '1'):
-        print 'Calculation ' + str(cid) + ' has been removed.'
+        print('Calculation ' + str(cid) + ' has been removed.')
     else:
-        print 'Removing calculation ' + str(cid) + ' has failed.'
+        print('Removing calculation ' + str(cid) + ' has failed.')
 
 def get(cid):
     global calcid, sw, stat;
@@ -153,7 +153,7 @@ def get(cid):
         sw = result['software']
         stat = result['stat']
     else:
-        print 'Retrieving calculation ' + str(cid) + ' failed.'
+        print('Retrieving calculation ' + str(cid) + ' failed.')
     return result
 
 def start(cid = None):
@@ -195,7 +195,7 @@ def start(cid = None):
             priority = calc['priority']
         else:
             priority = wftemplate['priority']
-        print priority
+        print(priority)
         sw=calc['software']
         add(calc['file'],calc['queue'],priority, settings, results, status)
         mysql_query('UPDATE `calculations` SET `parent` = ' + str(cid) + ' WHERE `id` = ' + str(calcid))
@@ -297,5 +297,5 @@ def setPriority(priority,cid = None):
     if(str(priority).isdigit()):
         return mysql_query('UPDATE `calculations` SET `priority` = ' + str(priority) + ' WHERE `id` = ' + str(cid))
     else:
-        print 'Priorities are number, the higher the number the higher the priority'
+        print('Priorities are number, the higher the number the higher the priority')
     return 0

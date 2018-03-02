@@ -17,7 +17,7 @@ def readINCAR(directory=os.getcwd()):
     return template
 
 def writeINCAR(template,directory=None):
-    print template
+    print(template)
     if directory == None:
         directory = os.getcwd()
     INCAR = open(os.path.join(directory,'INCAR'),'w')

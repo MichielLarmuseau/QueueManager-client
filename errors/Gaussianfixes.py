@@ -2,7 +2,7 @@ import os,math
 
 def test(calc):
     #Dummy
-    print 'This is a bugfix.'
+    print('This is a bugfix.')
     return True
 
 def rmWAVECAR(calc):

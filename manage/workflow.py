@@ -30,7 +30,7 @@ def add(name,entries):
             values += ', '
         result = mysql_query('INSERT INTO `workflows` (`name`, ' + str(fields[:-2])  + ') VALUES (\'' + str(name) + '\', ' + str(values[:-2]) + ')')
         #if(int(result) > 0):
-        print 'Added workflow entry ' + str(entry['stat']) + ' for workflow ' + str(name) + ' (' + str(entry['id']) + ')'
+        print('Added workflow entry ' + str(entry['stat']) + ' for workflow ' + str(name) + ' (' + str(entry['id']) + ')')
        # else:
         #    print 'Adding workflow failed (contact Michael)'
     return entry['id']
@@ -46,12 +46,11 @@ def modify(params):
                 query += params[key]
             query += ', '
     query = query[:-2] + ' WHERE `id` = ' + str(params['id']) + ' AND `stat` = ' + str(params['stat'])
-    print query
     result = mysql_query(query)
     if (result == '1'):
-        print 'The workflow has been modified. Please verify.'
+        print('The workflow has been modified. Please verify.')
     else:
-        print 'Help... Me...'
+        print('Help... Me...')
     return int(result)
     
 def remove(wid, stat):
@@ -60,9 +59,9 @@ def remove(wid, stat):
     name = mysql_query('SELECT `name` FROM `workflows` WHERE `id` = ' + wid + ' LIMIT 1')
     result = mysql_query('DELETE FROM `workflows` WHERE `id` = ' + wid + ' AND `stat` = ' + stat)
     if (result == '1'):
-        print 'Status ' + stat + ' of the ' + name['name'] + '(' + wid + ') workflow has been removed.'
+        print('Status ' + stat + ' of the ' + name['name'] + '(' + wid + ') workflow has been removed.')
     else:
-        print 'Removing the ' + stat  + ' stat of ' + name['name'] + '(' + wid + ') has failed.'
+        print('Removing the ' + stat  + ' stat of ' + name['name'] + '(' + wid + ') has failed.')
     return int(result)
 
 def removeAll(wid):
@@ -70,13 +69,13 @@ def removeAll(wid):
     name = mysql_query('SELECT `name` FROM `workflows` WHERE `id` = ' + wid + ' LIMIT 1')
     result = mysql_query('DELETE FROM `workflows` WHERE `id` = ' + wid)
     if (int(result) > 0):
-        print 'The ' + name['name'] + ' (' + wid + ') workflow has been removed.'
+        print('The ' + name['name'] + ' (' + wid + ') workflow has been removed.')
     else:
-        print 'Removing ' + name['name'] + ' (' + wid + ') has failed.'
+        print('Removing ' + name['name'] + ' (' + wid + ') has failed.')
 
 def setPriority(priority,wid,stat):
     if(str(priority).isdigit()):
         return int(mysql_query('UPDATE `workflows` SET `priority` = ' + str(priority) + ' WHERE `id` = ' + str(wid) + ' AND `stat` = ' + str(stat)))
     else:
-        print 'Priorities are number, the higher the number the higher the priority'
+        print('Priorities are number, the higher the number the higher the priority')
         return 0

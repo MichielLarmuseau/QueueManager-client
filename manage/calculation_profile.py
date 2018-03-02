@@ -22,7 +22,7 @@ def add(material,queue,priority = '',settings = None,results = None):
 
     if isinstance(settings, dict):
         settings = json.dumps(settings)
-        print 'Be sure to update the software type.'
+        print('Be sure to update the software type.')
     elif str(settings).isdigit():
         template = mysql_query('SELECT * FROM `templates` WHERE `id` = ' + str(settings))
         settings = template['template']
@@ -30,7 +30,7 @@ def add(material,queue,priority = '',settings = None,results = None):
     
     if isinstance(results, dict):
         results = json.dumps(results)
-        print 'Be sure to update the software type.'
+        print('Be sure to update the software type.')
     elif str(results).isdigit():
         template = mysql_query('SELECT * FROM `templates` WHERE `id` = ' + str(results))
         results = template['template']
@@ -46,13 +46,13 @@ def add(material,queue,priority = '',settings = None,results = None):
     owner = mysql_query('');
 
     result = mysql_query('INSERT INTO `calculations` (`queue`, `priority`, `owner`, `results`, `settings`, `software`, `file`) VALUES (' + str(queue) + ', ' + str(priority) + ', ' + str(owner) + ',  \'' + results + '\', \'' + settings + '\', \'' + software + '\', ' + str(material) + ')');
-    print 'INSERT INTO `calculations` (`queue`, `priority`, `owner`, `results`, `settings`, `software`, `file`) VALUES (' + str(queue) + ', ' + str(priority) + ', ' + str(owner) + ',  \'' + results + '\', \'' + settings + '\', \'' + software + '\', ' + str(material) + ')'
+
     queue = mysql_query('SELECT `id`, `name` FROM `queues` WHERE `id` = ' + str(queue))
 
     if(result == '1'):
-        print 'Added calculation for material ' + str(material) + ' (' + str(cid['cid']) + ') to the ' + queue['name'] + ' queue (' + str(queue['id']) + ') as calculation ' + str(cid['cid'])  + '.'
+        print('Added calculation for material ' + str(material) + ' (' + str(cid['cid']) + ') to the ' + queue['name'] + ' queue (' + str(queue['id']) + ') as calculation ' + str(cid['cid'])  + '.')
     else:
-        print 'Adding calculation for material ' + str(material) + ' to the ' + queue['name']  + ' queue (' + str(queue['id']) + ') failed.'
+        print('Adding calculation for material ' + str(material) + ' to the ' + queue['name']  + ' queue (' + str(queue['id']) + ') failed.')
     return cid['cid']
 
 def modify(params):
@@ -69,11 +69,11 @@ def modify(params):
     result = mysql_query(query)
     
     if (result == '1'):
-        print 'The calculation has been modified. Please verify.'
+        print('The calculation has been modified. Please verify.')
     elif (result == '0'):
-        print 'Nothing to modify.'
+        print('Nothing to modify.')
     else:
-        print 'Help... Me...'
+        print('Help... Me...')
     return result
 
 def getSettings(cid = None):
@@ -118,9 +118,9 @@ def updateResults(results,cid = None):
 def remove(cid):
     result = mysql_query('DELETE FROM `calculations` WHERE `id` = ' + str(cid))
     if (result == '1'):
-        print 'Calculation ' + str(cid) + ' has been removed.'
+        print('Calculation ' + str(cid) + ' has been removed.')
     else:
-        print 'Removing calculation ' + str(cid) + ' has failed.'
+        print('Removing calculation ' + str(cid) + ' has failed.')
 
 def get(cid):
     global calcid, sw, stat;
@@ -142,7 +142,7 @@ def get(cid):
         sw = result['software']
         stat = result['stat']
     else:
-        print 'Retrieving calculation ' + str(cid) + ' failed.'
+        print('Retrieving calculation ' + str(cid) + ' failed.')
     return result
 
 def start(cid = None):
@@ -187,7 +187,7 @@ def start(cid = None):
                 priority = calc['priority']
             else:
                 priority = wftemplate['priority']
-            print priority
+            print(priority)
             add(calc['file'],calc['queue'],priority, settings, results)
             mysql_query('UPDATE `calculations` SET `parent` = ' + str(cid) + ' WHERE `id` = ' + str(calcid))
             cid = calcid
@@ -247,12 +247,9 @@ def rollback(status, cid=None):
     if cid != None:
         calcid = cid
     current = get(calcid)
-    print current['id']
     while int(current['stat']) > int(status):
         oldcid = current['id']
         current = get(current['parent'])
-        print 'stuff'
-        print current
         if isinstance(current,basestring):
             restart(oldcid)
             break
@@ -293,5 +290,5 @@ def setPriority(priority,cid = None):
     if(str(priority).isdigit()):
         return mysql_query('UPDATE `calculations` SET `priority` = ' + str(priority) + ' WHERE `id` = ' + str(cid))
     else:
-        print 'Priorities are number, the higher the number the higher the priority'
+        print('Priorities are numbers, the higher the number the higher the priority')
     return 0

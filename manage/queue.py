@@ -20,9 +20,9 @@ def add(name,workflow='1',fields='ID:id,Info:text,Material ID:file,Status:stat,J
     result = mysql_query('INSERT INTO `queues` (`name`, `owner`, `dir`, `fields`, `workflow`) VALUES (\'' + str(name)  + '\', ' + str(owner) + ', \'' + str(directory) + '\',\'' + str(dbfield)  + '\', ' + str(workflow) + ')')
     qid = result
     if(int(result) > 0):
-        print 'The ' + name + ' queue has been added and assigned id ' + str(qid)
+        print('The ' + name + ' queue has been added and assigned id ' + str(qid))
     else:
-        print 'Adding queue failed (contact Michael)'
+        print('Adding queue failed (contact Michael)')
     return qid
 
 def modify(params):
@@ -38,17 +38,17 @@ def modify(params):
     query = query[:-2] + ' WHERE `id` = ' + str(params['id'])
     result = mysql_query(query)
     if (result == '1'):
-        print 'The queue has been modified. Please verify.'
+        print('The queue has been modified. Please verify.')
     else:
-        print 'Help... Me...'
+        print('Help... Me...')
     
 def remove(qid):
     name = mysql_query('SELECT `name` FROM `queues` WHERE `id` = ' + str(qid))
     result = mysql_query('DELETE FROM `queues` WHERE `id` = ' + str(qid))
     result2 = mysql_query('DELETE FROM `calculations` WHERE `queue` = ' + str(qid))
     if (result == '1'):
-        print 'The ' + name['name'] + '(' + str(qid) + ') queue has been removed.'
+        print('The ' + name['name'] + '(' + str(qid) + ') queue has been removed.')
     else:
-        print 'Removing the ' + name['name'] + '(' + str(qid) + ') has failed.'
+        print('Removing the ' + name['name'] + '(' + str(qid) + ') has failed.')
     return int(result)
 

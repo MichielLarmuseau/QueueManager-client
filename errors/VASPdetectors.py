@@ -1,6 +1,6 @@
 import subprocess
 def test(calc):
-    print 'SEARCHING FOR ERRORS'
+    print('SEARCHING FOR ERRORS')
     det = int(subprocess.Popen('grep WAAAAAAAAAGH tempout | wc -l',shell=True,stdout=subprocess.PIPE).communicate()[0])
     if det > 0:
         return True
@@ -18,7 +18,7 @@ def maxSteps(calc):
     if 'NELM' not in calc['settings']['INCAR'].keys():
         calc['settings']['INCAR']['NELM'] = 60
     
-    print str(nsteps) + 'performed of ' + str(calc['settings']['INCAR']['NELM']) + 'allowed steps'
+    print(str(nsteps) + 'performed of ' + str(calc['settings']['INCAR']['NELM']) + 'allowed steps')
 
     if nsteps == int(calc['settings']['INCAR']['NELM']):
         return True

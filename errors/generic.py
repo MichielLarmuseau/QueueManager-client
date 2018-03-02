@@ -81,7 +81,7 @@ def fixerrors(calc):
                 func = getattr(generic,fix['name'])
             else:
                 func = getattr(swdet,fix['name'])
-            print 'ERROR FIX: ' + fix['description']
+            print('ERROR FIX: ' + fix['description'])
             func(calc)
         results['errorfix'][err] += 1
         #results['errorfix'] = json.dumps(results['errorfix'])

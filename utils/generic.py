@@ -2,7 +2,7 @@ import json, os, subprocess, sys
 
 def execute(command):
     out, err = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate()
-    print out
+    print(out)
     print >> sys.stderr, err
 
     if err in locals():

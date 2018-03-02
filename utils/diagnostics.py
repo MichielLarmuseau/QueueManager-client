@@ -1,2 +1,2 @@
 def memTracker():
-    print 'temp'
+    print('temp')
