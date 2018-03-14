@@ -233,3 +233,9 @@ def gather(results):
         if key[0:2] == 'E0':
             results[key] = float(execute('grep \'energy  without entropy\'  OUTCAR | tail -1 | awk \'{ print $8 }\''))
     return results
+
+def converge(criteria):
+    for key in criteria:
+        #property to converge, setting and limit, check dict, 1 by 1, do 1 convergence at a time, store in parent converge : { kp : [previous energies], ecut : []}
+        # check if key in dictionary if not add key to dict, else add energy to list, create delta array, check if converged
+        # if converged return True else False or the failed property? if converged, HT.end else HT.restart/rollback if not True increaseSettings(property)

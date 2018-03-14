@@ -76,7 +76,7 @@ if int(parent['continue']) > int(parent['continued']):
     cont(cinfo)
 else:
     print('Initializing job.')
-    inherit(status,qdir,cfile)
+    inherit(status,qdir,cinfo['file'])
     initialize(cinfo['settings'])
 
 if detectSP('POSCAR'):
