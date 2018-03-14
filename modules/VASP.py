@@ -235,6 +235,9 @@ def gather(results):
     for key in results:
         if key[0:2] == 'E0':
             results[key] = float(execute('grep \'energy  without entropy\'  OUTCAR | tail -1 | awk \'{ print $8 }\''))
+        if key == 'Ehull':
+            os.system('module load pymatgen/3.5.0-intel-2016a-Python-2.7.11')
+            results[key] = float(execute('HTehull ./'))
     return results
 
 def converge(criteria):

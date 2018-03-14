@@ -114,7 +114,7 @@ writeSettings(cinfo['settings'])
 # can check eos errors based on e-v.dat
 
 run()
-
+convergedict = {'Ehull' : {'kp' : 1e-3, 'ENCUT' : 1e-3}}
 # Error catching
 
 finderrors(cinfo)
@@ -142,12 +142,6 @@ if os.path.isfile('aborted'):
 if 'error' in locals():
     HT.updateResults({'error':error}, cinfo['id'])
 else:
-    print('Energy OK. Ending calculation, deleting junk files and fetching results.')
-    HT.end(cinfo['id'])
-        #cleanup function
-    # Can change this to a step dictionary
-    os.remove('CHG')
-    
     print('Gathering results')
     results = json.loads(cinfo['results'])
     results = gather(results)
@@ -155,7 +149,16 @@ else:
     print('Updating results.')
 # updateresults could be assumed from dictionary keys and automated.
     HT.updateResults(results, cinfo['id'])
-
+    
+    if(convergedict):
+        converge(convergedict)
+        
+    print('Energy OK. Ending calculation, deleting junk files and fetching results.')
+    HT.end(cinfo['id'])
+        #cleanup function
+    # Can change this to a step dictionary
+    os.remove('CHG')
+    
 print('Updating settings.')
 
 # Update POTCAR INFO

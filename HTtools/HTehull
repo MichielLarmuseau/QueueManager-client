@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+from pymatgen.ext.matproj import MPRester
+from pymatgen import Composition
+from pymatgen.entries.computed_entries import ComputedEntry
+from pymatgen.core.units import FloatWithUnit
+from pymatgen.analysis.reaction_calculator import ComputedReaction
+from pymatgen.apps.borg.hive import VaspToComputedEntryDrone
+from pymatgen.apps.borg.queen import BorgQueen
+from pymatgen.analysis.phase_diagram import *
+import re,sys
+drone = VaspToComputedEntryDrone()
+queen = BorgQueen(drone, sys.argv[1], 4)
+entriesorig = queen.get_data()
+for entry in entriesorig:
+    name = entry.name
+    line = re.findall('[A-Z][^A-Z]*',name.replace('(','').replace(')',''))
+
+searchset= set(re.sub('\d',' ',line.strip()).split())
+entries = filter(lambda e: set(re.sub('\d',' ',str(e.composition).replace(' ','')).split())==searchset, entriesorig)
+
+#This initializes the REST adaptor. Put your own API key in.
+a = MPRester("s2vUo6mzETOHLdbu")
+
+all_entries = a.get_entries_in_chemsys(set(searchset)) + entries
+pd = PhaseDiagram(all_entries)
+
+def name(potcar):
+    name = ''
+    for p in potcar:
+        temp = (p.split(' ')[-2].split('_')[0])
+        name += temp
+    return name
+for e in pd.stable_entries:
+    if e.entry_id == None:
+        reaction = pd.get_equilibrium_reaction_energy(e)
+        print(reaction)
+
+for e in pd.unstable_entries:
+    decomp, e_above_hull = pd.get_decomp_and_e_above_hull(e)
+    pretty_decomp = [("{}:{}".format(k.composition.reduced_formula, k.entry_id), round(v, 2)) for k, v in decomp.iteritems()]
+    if e.entry_id == None:
+        print(e_above_hull)
+
