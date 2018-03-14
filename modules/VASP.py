@@ -2,10 +2,7 @@ from HighThroughput.communication.mysql import *
 from HighThroughput.utils.generic import  *
 from HighThroughput.io.VASP import *
 import os,time,shutil,subprocess,linecache, threading, math 
-vasp = 'vasp'
-
-if os.getenv('VSC_INSTITUTE_CLUSTER') == 'breniac':
-    vasp = 'vasp_std'
+from HighThroughput.config import vasp
 
 #cleanup function
 
@@ -186,6 +183,7 @@ def detectSO(poscar):
     return relativistic
 
 def run(ratio = 1,cwd = None):
+    global vasp
     #could move hybrid to parallel setup
     if cwd == None:
         cwd = os.getcwd();
@@ -193,7 +191,7 @@ def run(ratio = 1,cwd = None):
 
     #cores = mysql_query('SELECT `cores` FROM `clusters` WHERE `name` = ' + str(os.getenv('VSC_INSTITUTE_CLUSTER')))
     hybrid = str(min(nodes.values())/int(ratio))
-    return execute('mympirun -h ' + hybrid + ' --output ' + cwd + '/tempout' + vasp)
+    return execute('mympirun -h ' + hybrid + ' --output ' + cwd + '/tempout ' + vasp)
     
 
 def readSettings(settings):
