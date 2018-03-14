@@ -5,9 +5,3 @@ if not os.path.isfile(os.path.join(os.getenv('HOME'),'.highthroughput')):
 __all__ = ['communication', 'manage', 'io','modules','utils','errors']
 import communication,manage,io,modules,utils,errors
 
-vasp = 'vasp'
-
-if os.getenv('VSC_INSTITUTE_CLUSTER') == 'breniac':
-    vasp = 'vasp_std'
-
-print('Using the following vasp binary: ' + str(vasp))

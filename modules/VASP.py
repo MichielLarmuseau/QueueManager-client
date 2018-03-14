@@ -2,6 +2,11 @@ from HighThroughput.communication.mysql import *
 from HighThroughput.utils.generic import  *
 from HighThroughput.io.VASP import *
 import os,time,shutil,subprocess,linecache, threading, math 
+vasp = 'vasp'
+
+if os.getenv('VSC_INSTITUTE_CLUSTER') == 'breniac':
+    vasp = 'vasp_std'
+
 #cleanup function
 
 def inherit2(stat,qdir,cfile):
