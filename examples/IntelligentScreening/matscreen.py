@@ -84,6 +84,10 @@ if detectSP('POSCAR'):
     # detectSP are not uniquely chosen either.
     cinfo['settings']['INCAR']['ISPIN'] = 2
     
+#Test settings
+cinfo['settings']['INCAR']['ENCUT'] = 200
+cinfo['settings']['KPOINTS']['K'] = '1 1 1'
+    
 #==============================================================================
 # In this section you can also make manual changes to the settings, for example:
 # if int(qid) == 167 or int(qid) == 171:
