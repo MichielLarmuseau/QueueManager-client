@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import warnings
+warnings.filterwarnings("ignore")
 from pymatgen.ext.matproj import MPRester
 from pymatgen import Composition
 from pymatgen.entries.computed_entries import ComputedEntry
@@ -15,7 +17,7 @@ for entry in entriesorig:
     name = entry.name
     line = re.findall('[A-Z][^A-Z]*',name.replace('(','').replace(')',''))
 
-searchset= set(re.sub('\d',' ',line.strip()).split())
+searchset= set(re.sub('\d',' ',' '.join(line)).split())
 entries = filter(lambda e: set(re.sub('\d',' ',str(e.composition).replace(' ','')).split())==searchset, entriesorig)
 
 #This initializes the REST adaptor. Put your own API key in.
@@ -40,4 +42,3 @@ for e in pd.unstable_entries:
     pretty_decomp = [("{}:{}".format(k.composition.reduced_formula, k.entry_id), round(v, 2)) for k, v in decomp.iteritems()]
     if e.entry_id == None:
         print(e_above_hull)
-
