@@ -10,3 +10,4 @@ vasp = 'vasp'
 if os.getenv('VSC_INSTITUTE_CLUSTER') == 'breniac':
     vasp = 'vasp_std'
 
+print('Using the following vasp binary: ' + str(vasp))
