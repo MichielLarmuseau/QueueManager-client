@@ -133,7 +133,6 @@ if os.path.isfile('aborted'):
 
 # Nowadays I take the energy with sigma -> 0, while in theory without entropy should be nearly the same, 
 # this seems more robust and is also used by the VASP group
-energy = execute('grep \'energy  without entropy\'  OUTCAR | tail -1 | awk \'{ print $8 }\'')
 
 # Store detected errors
 if 'error' in locals():
@@ -144,16 +143,16 @@ else:
         #cleanup function
     # Can change this to a step dictionary
     os.remove('CHG')
-
+    
+    print('Gathering results')
     results = json.loads(cinfo['results'])
+    results = gather(results)
 
-    energy = float(energy)
-
-    print('Updating results')
+    print('Updating results.')
 # updateresults could be assumed from dictionary keys and automated.
     HT.updateResults(results, cinfo['id'])
 
-print('Updating settings')
+print('Updating settings.')
 
 # Update POTCAR INFO
 
@@ -163,10 +162,10 @@ cinfo['settings']['POTCAR'] = POTCAR_version.strip().replace('\n',', ')
 HT.updateSettings(cinfo['settings'], cinfo['id'])
 newcalc = int(HT.fetch(str(qid)))
 
-if newcalc > 0:
+""" if newcalc > 0:
     execute(submitscript + ' ' + str(qid) + ' ' + str(submit_arg))
     print('Submitted new calculation in queue ' + str(qid) + '.')
 else:
     print('Queue ' + str(qid) + ' is finished.')
-
+"""
 print('Calculation ended.')

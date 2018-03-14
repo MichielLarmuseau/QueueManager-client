@@ -227,3 +227,9 @@ def writeSettings(settings):
     writeKPOINTS(settings['KPOINTS'])
     writeINCAR(settings['INCAR'])
     return 0
+
+def gather(results):
+    for key in results:
+        if key[0:2] == 'E0':
+            results[key] = float(execute('grep \'energy  without entropy\'  OUTCAR | tail -1 | awk \'{ print $8 }\''))
+    return results
