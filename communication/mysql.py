@@ -1,10 +1,10 @@
-import httplib,urllib,json,os.path
+import http.client,urllib,json,os.path
 from datetime import datetime
 
 def mysql_query(query,blob=''):
     configfile= open(os.path.expanduser('~') + '/.highthroughput','r')
     login = json.loads(configfile.read())
-    conn = httplib.HTTPConnection('physics.epotentia.com',timeout=900)
+    conn = http.client.HTTPConnection('physics.epotentia.com',timeout=900)
     headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
     params = urllib.urlencode({'query' : query, 'blob' : blob, 'email' : login['email'], 'token' : login['token']})
     conn.request('POST','/apis/api.beta0.0.2.php',params,headers)
@@ -25,7 +25,7 @@ def mysql_query_profile(query,blob=''):
     login = json.loads(configfile.read())
     print('load config')
     print(datetime.now() - startTime)
-    conn = httplib.HTTPConnection('www.darkawake.com')
+    conn = http.client.HTTPConnection('www.darkawake.com')
     print('connected')
     print(datetime.now() - startTime)
     headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}

@@ -239,6 +239,10 @@ def gather(results):
             results[key] = float(execute('HTehull ./'))
         elif key == 'volume':
             results[key] = float(execute('grep vol OUTCAR | tail -n 1 | awk \'{print $5}\''))
+        elif key == 'volume':
+            results[key] = float(execute('grep vol OUTCAR | tail -n 1 | awk \'{print $5}\''))
+        elif key == 'volume':
+            results[key] = float(execute('grep vol OUTCAR | tail -n 1 | awk \'{print $5}\''))
     return results
 
 def converge(criteria):
