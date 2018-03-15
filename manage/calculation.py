@@ -136,7 +136,7 @@ def get(cid):
 
     material = mysql_query('SELECT `file` FROM `calculations` WHERE `id` = ' + str(cid))
 
-    if isinstance(material, basestring):
+    if isinstance(material, str):
         return material
 
     if(int(material['file']) < 10000000):
@@ -148,7 +148,7 @@ def get(cid):
     result['results'] = json.loads(result['results'])
     result['settings'] = json.loads(result['settings'])
 
-    if not isinstance(result, basestring):
+    if not isinstance(result, str):
         calcid = cid
         sw = result['software']
         stat = result['stat']
@@ -191,7 +191,7 @@ def start(cid = None):
         else:
             settings = calc['settings']
 
-        if isinstance(wftemplate,basestring):
+        if isinstance(wftemplate,str):
             priority = calc['priority']
         else:
             priority = wftemplate['priority']
@@ -251,10 +251,10 @@ def rollback(status, cid=None):
     if cid != None:
         calcid = cid
     current = get(calcid)
-    while int(current['stat']) > int(status) and not isinstance(current,basestring):
+    while int(current['stat']) > int(status) and not isinstance(current,str):
         oldcid = current['id']
         current = get(current['parent'])
-        if isinstance(current,basestring):
+        if isinstance(current,str):
             restart(oldcid)
             break
         else:
