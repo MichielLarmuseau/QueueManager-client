@@ -83,9 +83,9 @@ def add(filename):
     result = mysql_query('INSERT INTO newdata (`a`, `b`, `c`, `alpha`, `beta`, `gamma`, `vol`, `celltemp`, `formula`, `calcformula`, `authors`, `year`, `text`, `owner`, `cif`) VALUES (' + str(na) + ', ' + str(nb) + ', ' + str(nc) + ',' + str(alpha) + ', ' + str(beta) + ', ' + str(gamma) + ',' + str(volume) + ', 0, \'' + unique + '\', \'' + unique + '\', \'' + name['name'] + '\', 2012,\'' + title[0].replace('POSCAR','').replace('.com','') + '\', ' + owner + ',\'' + CIFtext.replace('\'','\\\'') + '\')');
     cifid = result
     if int(result) > 0:
-        print 'Inserted ' + title[0].replace('POSCAR','').replace('.com','') + ' into the materials database as cif ' + str(cifid) + '.'
+        print('Inserted ' + title[0].replace('POSCAR','').replace('.com','') + ' into the materials database as cif ' + str(cifid) + '.')
     else:
-        print 'Insert failed.'
+        print('Insert failed.')
     if len(title) > 1:
         os.rename(filename,str(cifid) + '.' + title[1]);
     else:
