@@ -6,7 +6,7 @@ def mysql_query(query,blob=''):
     login = json.loads(configfile.read())
     conn = http.client.HTTPConnection('physics.epotentia.com',timeout=900)
     headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
-    params = urllib.urlencode({'query' : query, 'blob' : blob, 'email' : login['email'], 'token' : login['token']})
+    params = urllib.parse.urlencode({'query' : query, 'blob' : blob, 'email' : login['email'], 'token' : login['token']})
     conn.request('POST','/apis/api.beta0.0.2.php',params,headers)
     response = conn.getresponse().read()
     try: 
@@ -29,7 +29,7 @@ def mysql_query_profile(query,blob=''):
     print('connected')
     print(datetime.now() - startTime)
     headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
-    params = urllib.urlencode({'query' : query, 'blob' : blob, 'email' : login['email'], 'token' : login['token']})
+    params = urllib.parse.urlencode({'query' : query, 'blob' : blob, 'email' : login['email'], 'token' : login['token']})
     print('encoded')
     print(datetime.now() - startTime)
     conn.request('POST','/compmat/api2.php',params,headers)
