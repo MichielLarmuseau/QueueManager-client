@@ -2,7 +2,7 @@
 from HighThroughput.communication.mysql import *
 import sys
 
-if sys.argv[1] > 0:
+if int(sys.argv[1]) > 0:
     overview = mysql_query('SELECT `stat`, COUNT(`stat`) AS `count` FROM `calculations` WHERE queue = ' + sys.argv[1] + ' GROUP BY `stat`')
     for o in overview:
         print(o['stat'] + '\t' + o['count'])
