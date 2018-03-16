@@ -2,7 +2,7 @@
 #HTrestart calcid or HTrestart queue file
 
 import HighThroughput.manage.calculation as HT, sys,os
-from HighThroughput.communication.mysql import *
+from HighThroughput.communication.mysql import mysql_query
 
 if len(sys.argv) == 3:
     calc = mysql_query('SELECT `id` FROM `calculations` WHERE `queue` = ' + sys.argv[1] + ' AND `file` = ' + sys.argv[2] + ' AND `leaf` = 1')

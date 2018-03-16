@@ -22,7 +22,7 @@ def writeINCAR(template,directory=None):
         directory = os.getcwd()
     INCAR = open(os.path.join(directory,'INCAR'),'w')
 
-    for key,value in sorted(template.iteritems()):
+    for key,value in sorted(template.iter()):
         INCAR.write(str(key) + ' = ' + str(value) + '\n')
 
     return INCAR.close()
