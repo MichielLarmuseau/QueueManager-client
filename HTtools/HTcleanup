@@ -6,12 +6,12 @@ from HighThroughput.communication.mysql import *
 server = os.getenv('VSC_INSTITUTE_CLUSTER')
 qstat = subprocess.Popen('qstat -c | grep R | awk \'{print $1}\' | cut -d. -f1',stdout=subprocess.PIPE,shell=True).communicate()[0].split()
 
-if not isinstance(qstat,basestring):
+if not isinstance(qstat,str):
     end = ' AND `id` NOT IN (' + ','.join(qstat) + ')'
 
 
 crashes = mysql_query('SELECT `id` FROM `calculations` WHERE `queue` = ' + sys.argv[1] + ' AND `stat` % 2 = 1 AND `server` = \'' + server  + '\'' + end)
 
-if not isinstance(crashes,basestring):
+if not isinstance(crashes,str):
     for calc in crashes:
         HT.manage.calculation.restart(calc['id'])

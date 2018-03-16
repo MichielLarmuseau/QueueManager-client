@@ -22,11 +22,11 @@ entries = filter(lambda e: set(re.sub('\d',' ',str(e.composition).replace(' ',''
 a = MPRester("s2vUo6mzETOHLdbu")
 
 all_entries = a.get_entries_in_chemsys(set(searchset)) + entries
-print 'fetched entries'
+print('fetched entries')
 pd = PhaseDiagram(all_entries)
-print 'made phase diagram'
-print 'analyzing'
-print 'Stable Entries (formula, materials_id)\n--------'
+print('made phase diagram')
+print('analyzing')
+print('Stable Entries (formula, materials_id)\n--------')
 
 def name(potcar):
     name = ''
@@ -37,12 +37,12 @@ def name(potcar):
 for e in pd.stable_entries:
     if e.entry_id == None:
         reaction = pd.get_equilibrium_reaction_energy(e)
-        print name(e.parameters['potcar_symbols']),e.composition.reduced_formula, e.entry_id, reaction
+        print(name(e.parameters['potcar_symbols']),e.composition.reduced_formula, e.entry_id, reaction)
 
-print '\nUnstable Entries (formula, materials_id, e_above_hull (eV/atom), decomposes_to)\n--------'
+print('\nUnstable Entries (formula, materials_id, e_above_hull (eV/atom), decomposes_to)\n--------')
 for e in pd.unstable_entries:
     decomp, e_above_hull = pd.get_decomp_and_e_above_hull(e)
     pretty_decomp = [("{}:{}".format(k.composition.reduced_formula, k.entry_id), round(v, 2)) for k, v in decomp.iteritems()]
     if e.entry_id == None:
-        print name(e.parameters['potcar_symbols']),e.composition.reduced_formula, e.entry_id,   e_above_hull, pretty_decomp
+        print(name(e.parameters['potcar_symbols']),e.composition.reduced_formula, e.entry_id,   e_above_hull, pretty_decomp)
 

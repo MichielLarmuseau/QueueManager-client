@@ -107,9 +107,9 @@ else:
         results['gamma'] = round(degrees(arccos(dot(a,b)/na/nb)),1)
     
         print('Updating results')
-        print results
+        print(results)
         HT.updateResults(results, cid)
 
 print('Updating settings')
-print settings
+print(settings)
 HT.updateSettings(settings, cid)

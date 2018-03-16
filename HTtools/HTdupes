@@ -9,7 +9,7 @@ dupelist = []
 for wf in workflow:
     dupes = mysql_query('SELECT `file` FROM `calculations` WHERE `queue` = ' + queue['id'] + ' AND `stat` = ' + wf['stat'] + ' GROUP BY `file` HAVING COUNT(`file`) > 1')
     
-    if not isinstance(dupes, basestring):
+    if not isinstance(dupes, str):
         if isinstance(dupes, list):
             for dupe in dupes:
                 if dupe['file'] not in dupelist:
@@ -18,5 +18,5 @@ for wf in workflow:
             if dupes['file'] not in dupelist:
                 dupelist.append(dupes['file'])
 
-print '\n'.join(dupelist)
+print('\n'.join(dupelist))
     

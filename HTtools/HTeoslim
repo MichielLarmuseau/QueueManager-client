@@ -54,7 +54,7 @@ def checkeos(eospath):
     if i != 0 or j !=0 or k !=0 or l != 0:
         output += ' \033[1m(X)'
     if i != 0 or l != 0:
-        print output
+        print(output)
 
 rootdir = os.curdir
 for dirs in os.listdir(rootdir):

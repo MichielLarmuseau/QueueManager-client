@@ -21,4 +21,4 @@ for line in poscar:
 coords = sorted(coords,key=norm)
 coords = [' '.join(x) for x in coords]
 text = ''.join(poscar[0:8]) + '\n'.join(coords)
-print text
+print(text)

@@ -4,5 +4,5 @@ from HighThroughput.communication.mysql import *
 
 result = mysql_query('SELECT `stat` FROM `calculations` WHERE `queue` = ' + str(sys.argv[1]) + ' AND `file` = ' + str(sys.argv[2]) + ' AND `leaf` = 1')
 
-if not isinstance(result,basestring):
-    print result['stat']
+if not isinstance(result,str):
+    print(result['stat'])
