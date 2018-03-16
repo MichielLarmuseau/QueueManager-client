@@ -9,5 +9,5 @@ if len(sys.argv) == 3:
 else:
     calc = HT.get(sys.argv[1])
 
-if not isinstance(calc, str):
-    HT.restart(calc['id'])
+    if not isinstance(calc, str):
+        HT.restart(calc['id'])
