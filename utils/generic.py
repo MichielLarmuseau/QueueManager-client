@@ -1,9 +1,9 @@
-import json, os, subprocess, sys
+import  os, subprocess, sys
 
 def execute(command):
     out, err = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate()
     print(out)
-    print >> sys.stderr, err
+    print(err,file=sys.stderr)
 
     if err in locals():
         #raise Exception('Error in executing bash-command.')
