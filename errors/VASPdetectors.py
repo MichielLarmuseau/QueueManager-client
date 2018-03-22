@@ -18,7 +18,7 @@ def maxSteps(calc):
     if 'NELM' not in calc['settings']['INCAR'].keys():
         calc['settings']['INCAR']['NELM'] = 60
     
-    print(str(nsteps) + 'performed of ' + str(calc['settings']['INCAR']['NELM']) + 'allowed steps')
+    print(str(nsteps) + ' performed of ' + str(calc['settings']['INCAR']['NELM']) + ' allowed steps')
 
     if nsteps == int(calc['settings']['INCAR']['NELM']):
         return True

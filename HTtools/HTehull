@@ -23,7 +23,7 @@ entries = filter(lambda e: set(re.sub('\d',' ',str(e.composition).replace(' ',''
 #This initializes the REST adaptor. Put your own API key in.
 a = MPRester("s2vUo6mzETOHLdbu")
 
-all_entries = a.get_entries_in_chemsys(set(searchset)) + entries
+all_entries = a.get_entries_in_chemsys(set(searchset)) + list(entries)
 pd = PhaseDiagram(all_entries)
 
 def name(potcar):
