@@ -14,7 +14,7 @@ def mysql_query(query,blob=''):
         if len(data) == 1:
             data = data[0]
     except:
-	    data = response
+	    data = response.decode()
     conn.close()
     return data
 

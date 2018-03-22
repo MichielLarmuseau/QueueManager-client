@@ -39,6 +39,6 @@ for e in pd.stable_entries:
 
 for e in pd.unstable_entries:
     decomp, e_above_hull = pd.get_decomp_and_e_above_hull(e)
-    pretty_decomp = [("{}:{}".format(k.composition.reduced_formula, k.entry_id), round(v, 2)) for k, v in decomp.iteritems()]
+    pretty_decomp = [("{}:{}".format(k.composition.reduced_formula, k.entry_id), round(v, 2)) for k, v in decomp.items()]
     if e.entry_id == None:
         print(e_above_hull)
