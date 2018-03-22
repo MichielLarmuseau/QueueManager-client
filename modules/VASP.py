@@ -190,7 +190,7 @@ def run(ratio = 1,cwd = None):
     nodes = getNodeInfo()
 
     #cores = mysql_query('SELECT `cores` FROM `clusters` WHERE `name` = ' + str(os.getenv('VSC_INSTITUTE_CLUSTER')))
-    hybrid = str(int(min(nodes.values()))/int(ratio))
+    hybrid = str(int(min(nodes.values())/int(ratio)))
     return execute('mympirun -h ' + hybrid + ' --output ' + cwd + '/tempout ' + vasp)
     
 
