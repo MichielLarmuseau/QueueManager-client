@@ -93,9 +93,21 @@ def notConverged(calc):
             (crit,cond,current,converged) = propset[i]
             if converged == 1:
                 continue;
-            elif crit == 'kp':
+            elif crit == 'K':
+                if 'KPOINTS' not in presults['settingsmod'].keys():
+                    presults['settingsmod']['KPOINTS'] = {}
+                if 'K' not in ['settingsmod']['KPOINTS'].keys():
+                    presults['settingsmod']['KPOINTS']['K'] = '2 2 2'
+                else:
+                    presults['settingsmod']['KPOINTS']['K'] = ' '.join([str(int(x) + 2) for x in presults['settingsmod']['KPOINTS']['K'].split(' ')])
                 break;
-            elif crit == 'Ecut':
+            elif crit == 'ENCUT':
+                if 'INCAR' not in presults['settingsmod'].keys():
+                    presults['settingsmod']['INCAR'] = {}
+                if 'ENCUT' not in presults['settingsmod']['INCAR']:
+                    presults['settingsmod']['INCAR']['ENCUT'] = 100
+                else:
+                    presults['settingsmod']['INCAR']['ENCUT'] += 100
                 break;
-            
+    updateResults(presults,calc['parent'])
     return True

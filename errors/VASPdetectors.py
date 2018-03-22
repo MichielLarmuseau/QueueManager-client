@@ -107,6 +107,12 @@ def notConverged(calc):
                         error = True
                     else:
                         print('Property ' + prop + ' is converged up to ' + str(delta) + '.')
+                        if crit == 'K':
+                            presults['settingsmod']['KPOINTS']['K'] = ' '.join([str(int(x) - 2) for x in presults['settingsmod']['KPOINTS']['K'].split(' ')])
+                            break;
+                        elif crit == 'ENCUT':
+                                presults['settingsmod']['INCAR']['ENCUT'] -= 100
+                            break;
                         converged = 1
                     pnew += ((crit,cond,current,converged),)
             print(pnew)
