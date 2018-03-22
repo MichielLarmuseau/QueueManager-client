@@ -1,7 +1,9 @@
 import  os, subprocess, sys
 
 def execute(command):
-    out, err = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate().decode()
+    out, err = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate()
+    out = out.decode();
+    err = err.decode();
     print(out)
     print(err,file=sys.stderr)
 
