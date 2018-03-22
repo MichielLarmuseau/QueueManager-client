@@ -1,7 +1,7 @@
 import  os, subprocess, sys
 
 def execute(command):
-    out, err = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate()
+    out, err = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate().decode()
     print(out)
     print(err,file=sys.stderr)
 
@@ -31,7 +31,7 @@ def error_catch(command):
 def getNodeInfo():
     from collections import Counter
     nodefile = subprocess.Popen('cat $PBS_NODEFILE',stdout=subprocess.PIPE,shell=True)
-    nodefile = [x.split('.')[0].replace('node','') for x in filter(None,nodefile.communicate()[0].split('\n'))]
+    nodefile = [x.split('.')[0].replace('node','') for x in filter(None,nodefile.communicate()[0].decode().split('\n'))]
     corecount = Counter()
     for node in nodefile:
         corecount[node] += 1
