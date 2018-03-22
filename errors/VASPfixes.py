@@ -1,4 +1,6 @@
 import os,math
+from HighThroughput.manage.calculations import getResults,updateResults,getSettings
+import numpy as np
 
 def test(calc):
     #Dummy
@@ -76,3 +78,24 @@ def startCHGCAR(calc):
     calc['settings']['INCAR']['ICHARG'] = "1"
     return True
 
+def modSettings(calc,settingsmod):
+    return True
+
+def notConverged(calc):
+    presults = getResults(calc['parent'])
+    if settingsmod not in presults.keys():
+        presults['settingsmod'] = {}
+        
+    for propset in presults['convergence']:
+        total = len(propset)
+        prop = propset[0]
+        for i in range(1,total):
+            (crit,cond,current,converged) = propset[i]
+            if converged == 1:
+                continue;
+            elif crit == 'kp':
+                break;
+            elif crit == 'Ecut':
+                break;
+            
+    return True

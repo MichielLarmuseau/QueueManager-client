@@ -16,11 +16,9 @@ submitscript = ''
 
 # Set up the queue directory paths, this is always the same and should be moved to the .highthroughput file in a dictionary except for manual overrides
 user = os.getenv('USER')
+scratch = os.getenv('VSC_SCRATCH')
 
-if os.getenv('VSC_INSTITUTE_CLUSTER') == 'breniac':
-    qdir = os.path.join('/scratch/leuven/' + user.replace('vsc','')[0:3] + '/' + user, 'queues', str(qid))
-else:
-    qdir = os.path.join('/user/scratch/gent/' + user[0:-3] + '/vsc40479', 'queues', str(qid))
+qdir = os.path.join(os.getenv('VSC_SCRATCH'), 'queues', str(qid))
 
 # Fetching a job and immediately starting it, ensuring we don't run the same job twice
 print('Fetching...')
@@ -114,7 +112,12 @@ writeSettings(cinfo['settings'])
 # can check eos errors based on e-v.dat
 
 run()
-convergedict = {'Ehull' : {'kp' : 1e-3, 'ENCUT' : 1e-3}}
+
+#Ehull is with respect to a fixed cutoff so we can't do convergence like this
+#Best might be to make a database of elementary material energies or atoms
+#for different cutoffs, then we can calculate the elementary formation or
+#cohesion energy in steps of 50 eV
+convergedict = [('Ehull', [('kp', 1e-3)])]
 # Error catching
 
 finderrors(cinfo)
@@ -150,8 +153,6 @@ else:
 # updateresults could be assumed from dictionary keys and automated.
     HT.updateResults(results, cinfo['id'])
     
-    if(convergedict):
-        converge(convergedict)
         
     print('Energy OK. Ending calculation, deleting junk files and fetching results.')
     HT.end(cinfo['id'])

@@ -135,8 +135,8 @@ def get(cid):
     global calcid, sw, stat;
 
     material = mysql_query('SELECT `file` FROM `calculations` WHERE `id` = ' + str(cid))
-    print(type(material))
-    print(material)
+
+
     if isinstance(material, str):
         return material
     

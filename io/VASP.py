@@ -33,7 +33,7 @@ def readKPOINTS(directory=None):
     template = dict()
     KPOINTS = open(os.path.join(directory,'KPOINTS'),'r') 
         
-    kfile = filter(None,map(lambda s: s.strip(), KPOINTS.readlines()))
+    kfile = list(filter(None,map(lambda s: s.strip(), KPOINTS.readlines())))
     
     if int(kfile[1]) != 0:
         template['file'] = '\n'.join(kfile)
