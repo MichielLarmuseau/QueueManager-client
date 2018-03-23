@@ -1,5 +1,5 @@
 import subprocess, os
-from HighThroughput.manage.calculations import getResults,updateResults
+from HighThroughput.manage.calculation import getResults,updateResults
 from HighThroughput.modules.VASP import gather
 import numpy as np
 
