@@ -83,7 +83,7 @@ def modSettings(calc,settingsmod):
 
 def converge(calc):
     presults = getResults(calc['parent'])
-    if settingsmod not in presults.keys():
+    if 'settingsmod' not in presults.keys():
         presults['settingsmod'] = {}
         
     for propset in presults['convergence']:
