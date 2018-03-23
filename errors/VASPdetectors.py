@@ -97,7 +97,7 @@ def notConverged(calc):
 
 
                 newval = gather({ prop  : ''})[prop]
-                updateResults(presults,calc['parent'])
+                
                 current.append(newval)
                 if len(current) == 1:
                     error = True
@@ -117,7 +117,8 @@ def notConverged(calc):
                             break;
                         converged = 1
                 pnew += ((crit,cond,current,converged),)
-            print(pnew)
+
             new.append(pnew)
-    print(new)                
+    presults['convergence'] = new
+    updateResults(presults,calc['parent'])               
     return error
