@@ -78,8 +78,6 @@ def startCHGCAR(calc):
     calc['settings']['INCAR']['ICHARG'] = "1"
     return True
 
-def modSettings(calc,settingsmod):
-    return True
 
 def converge(calc):
     presults = getResults(calc['parent'])
@@ -114,4 +112,5 @@ def converge(calc):
                 calc['settings']['INCAR']['ENCUT'] += presults['settingsmod']['INCAR']['ENCUT']
                 break;
     updateResults(presults,calc['parent'])
+    print(calc['settings'])
     return True
