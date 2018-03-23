@@ -111,7 +111,7 @@ def notConverged(calc):
                             presults['settingsmod']['KPOINTS']['K'] = ' '.join([str(int(x) - 2) for x in presults['settingsmod']['KPOINTS']['K'].split(' ')])
                             break;
                         elif crit == 'ENCUT':
-                                presults['settingsmod']['INCAR']['ENCUT'] -= 100
+                            presults['settingsmod']['INCAR']['ENCUT'] -= 100
                             break;
                         converged = 1
                     pnew += ((crit,cond,current,converged),)
