@@ -94,14 +94,16 @@ def notConverged(calc):
                     new.append(propset)
                     continue;
                 print('Checking ' + prop + ' convergence ' + ' with respect to ' + crit + '.')
-                if len(current) == 0:
+
+
+                new = gather({ prop  : ''})[prop]
+                updateResults(presults,calc['parent'])
+                current.append(new)
+                if len(current) == 1:
                     error = True
                 else:
-                    new = gather({ prop  : ''})[prop]
-                    updateResults(presults,calc['parent'])
-                    current.append(new)
                     delta = np.abs(current[-1] - current[-2])
-
+    
                     if delta > cond:
                         print('Not converged. Remaining error of ' + str(delta) + ' on ' + prop + '.')
                         error = True
@@ -114,7 +116,7 @@ def notConverged(calc):
                             presults['settingsmod']['INCAR']['ENCUT'] -= 100
                             break;
                         converged = 1
-                    pnew += ((crit,cond,current,converged),)
+                pnew += ((crit,cond,current,converged),)
             print(pnew)
             new.append(pnew)
     print(new)                
