@@ -81,7 +81,7 @@ def startCHGCAR(calc):
 def modSettings(calc,settingsmod):
     return True
 
-def notConverged(calc):
+def converge(calc):
     presults = getResults(calc['parent'])
     if settingsmod not in presults.keys():
         presults['settingsmod'] = {}
