@@ -1,5 +1,6 @@
 import os,math
 from HighThroughput.manage.calculation import getResults,updateResults,getSettings
+from HighThroughput.modules.VASP import settingsMod
 import numpy as np
 
 def test(calc):
@@ -100,6 +101,9 @@ def converge(calc):
                     presults['settingsmod']['KPOINTS']['K'] = '2 2 2'
                 else:
                     presults['settingsmod']['KPOINTS']['K'] = ' '.join([str(int(x) + 2) for x in presults['settingsmod']['KPOINTS']['K'].split(' ')])
+                curkp = [int(x) for x in calc['settings']['KPOINTS']['K'].split(' ')]
+                curmod = [int(x) for x in presults['settingsmod']['KPOINTS']['K'].split(' ')]
+                calc['settings']['KPOINTS']['K'] = ' '.join([curkp[x] + curmod[x] for x in range(3)])
                 break;
             elif crit == 'ENCUT':
                 if 'INCAR' not in presults['settingsmod'].keys():
@@ -108,6 +112,7 @@ def converge(calc):
                     presults['settingsmod']['INCAR']['ENCUT'] = 100
                 else:
                     presults['settingsmod']['INCAR']['ENCUT'] += 100
+                calc['settings']['INCAR']['ENCUT'] += presults['settingsmod']['INCAR']['ENCUT']
                 break;
     updateResults(presults,calc['parent'])
     return True
