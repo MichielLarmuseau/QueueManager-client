@@ -96,9 +96,9 @@ def notConverged(calc):
                 print('Checking ' + prop + ' convergence ' + ' with respect to ' + crit + '.')
 
 
-                new = gather({ prop  : ''})[prop]
+                newval = gather({ prop  : ''})[prop]
                 updateResults(presults,calc['parent'])
-                current.append(new)
+                current.append(newval)
                 if len(current) == 1:
                     error = True
                 else:
