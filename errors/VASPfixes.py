@@ -1,5 +1,5 @@
 import os,math
-from HighThroughput.manage.calculations import getResults,updateResults,getSettings
+from HighThroughput.manage.calculation import getResults,updateResults,getSettings
 import numpy as np
 
 def test(calc):
