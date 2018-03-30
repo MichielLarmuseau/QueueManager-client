@@ -83,8 +83,10 @@ def notConverged(calc):
         return False
     else:
         #[('ehull',('kp',1e-3,[],0),('ecut',1e-3,50))] format, could add more than two els to each tuple to determine how to increase the settings and so on
+        #new format is #[['Ehull',['K',1e-3,[],0],['ENCUT',1e-3,50]]]
         new = []
         for propset in presults['convergence']:
+            print('propset',propset, len(propset))
             total = len(propset)
             prop = propset[0]
             pnew = (prop,)
@@ -99,14 +101,12 @@ def notConverged(calc):
                 newval = gather({ prop  : ''})[prop]
                 
                 current.append(newval)
-                print(len(current))
+                
                 if len(current) == 1:
                     error = True
                 else:
                     delta = np.abs(current[-1] - current[-2])
-                    print(current)
-                    print(delta)
-                    print(cond)
+
                     if delta > cond:
                         print('Not converged. Remaining error of ' + str(delta) + ' on ' + prop + '.')
                         error = True
@@ -120,8 +120,9 @@ def notConverged(calc):
                             break;
                         converged = 1
                 pnew += ((crit,cond,current,converged),)
-
+            print('pnew', pnew)
             new.append(pnew)
+    print('new',new)
     presults['convergence'] = new
     updateResults(presults,calc['parent'])               
     return error
