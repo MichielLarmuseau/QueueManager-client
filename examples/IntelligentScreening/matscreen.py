@@ -59,7 +59,7 @@ if os.path.isfile('STOPCAR'):
 # stop signal will be sent to your ab initio program.
 
 # Could be automated based on LOOP time
-checkpointStart(cinfo,3600)
+checkpointStart(cinfo,1800)
 
 # Here we continue the job if it was checkpointed in a previous job
 parent = HT.getSettings(cinfo['parent'])

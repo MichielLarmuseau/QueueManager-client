@@ -77,6 +77,7 @@ def modify(params):
             query += ', '
     query = query[:-2] + ' WHERE `id` = ' + str(params['id'])
     result = int(bool(mysql_query(query)))
+    print(query)
     if (result == 1):
         print('The calculation has been modified. Please verify.')
     elif (result == 0):
