@@ -264,6 +264,9 @@ def rollback(status, cid=None):
     modify({'id' : current['id'], 'leaf': 1})
     return 1
 
+def showAll(qid):
+    return mysql_query('SELECT * FROM `calculations` WHERE `queue` = ' + str(qid))
+
 def end(cid = None):
     global stat
     status = 0

@@ -100,7 +100,7 @@ def converge(calc):
                     presults['settingsmod']['KPOINTS']['K'] = ' '.join([str(int(x) + 2) for x in presults['settingsmod']['KPOINTS']['K'].split(' ')])
                 curkp = [int(x) for x in calc['settings']['KPOINTS']['K'].split(' ')]
                 curmod = [int(x) for x in presults['settingsmod']['KPOINTS']['K'].split(' ')]
-                calc['settings']['KPOINTS']['K'] = ' '.join([curkp[x] + curmod[x] for x in range(3)])
+                calc['settings']['KPOINTS']['K'] = ' '.join([str(curkp[x] + curmod[x]) for x in range(3)])
                 break;
             elif crit == 'ENCUT':
                 if 'INCAR' not in presults['settingsmod'].keys():
