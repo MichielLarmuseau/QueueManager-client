@@ -85,5 +85,7 @@ def fixerrors(calc):
             func(calc)
         results['errorfix'][err] += 1
         #results['errorfix'] = json.dumps(results['errorfix'])
-        updateResults(results,calc['parent'])    
+    results2 = getResults(calc['parent'])
+    results2['errorfix'] = results['errorfix']
+    updateResults(results2,calc['parent'])    
     return 0
