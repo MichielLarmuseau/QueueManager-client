@@ -112,5 +112,7 @@ def converge(calc):
                 calc['settings']['INCAR']['ENCUT'] += presults['settingsmod']['INCAR']['ENCUT']
                 break;
     updateResults(presults,calc['parent'])
+    print('---end of fix---')
     print(calc['settings'])
+    print(presults)
     return True
