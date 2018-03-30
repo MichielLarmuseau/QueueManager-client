@@ -99,11 +99,14 @@ def notConverged(calc):
                 newval = gather({ prop  : ''})[prop]
                 
                 current.append(newval)
+                print(len(current))
                 if len(current) == 1:
                     error = True
                 else:
                     delta = np.abs(current[-1] - current[-2])
-    
+                    print(current)
+                    print(delta)
+                    print(cond)
                     if delta > cond:
                         print('Not converged. Remaining error of ' + str(delta) + ' on ' + prop + '.')
                         error = True

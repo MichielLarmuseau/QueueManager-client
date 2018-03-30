@@ -94,7 +94,7 @@ def converge(calc):
             elif crit == 'K':
                 if 'KPOINTS' not in presults['settingsmod'].keys():
                     presults['settingsmod']['KPOINTS'] = {}
-                if 'K' not in ['settingsmod']['KPOINTS'].keys():
+                if 'K' not in presults['settingsmod']['KPOINTS'].keys():
                     presults['settingsmod']['KPOINTS']['K'] = '2 2 2'
                 else:
                     presults['settingsmod']['KPOINTS']['K'] = ' '.join([str(int(x) + 2) for x in presults['settingsmod']['KPOINTS']['K'].split(' ')])

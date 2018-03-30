@@ -12,7 +12,7 @@ from HighThroughput.errors.generic import *
 
 qid = sys.argv[1]
 submit_arg = '' + sys.argv[2] + ' ' + sys.argv[3] + ' ' + sys.argv[4]
-submitscript = ''
+submitscript = '' #this is what needs updating for auto error fix resubmit
 
 # Set up the queue directory paths, this is always the same and should be moved to the .highthroughput file in a dictionary except for manual overrides
 user = os.getenv('USER')
