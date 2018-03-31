@@ -92,7 +92,7 @@ def notConverged(calc):
             for i in range(1,total):
                 (crit,cond,current,converged) = propset[i]
                 if converged == 1:
-                    pnew.append(propset[i])
+                    pnew += propset[i]
                     continue;
                 print('Checking ' + prop + ' convergence ' + ' with respect to ' + crit + '.')
 
