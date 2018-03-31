@@ -82,8 +82,7 @@ def notConverged(calc):
     if 'convergence' not in presults.keys():
         return False
     else:
-        #[('ehull',('kp',1e-3,[],0),('ecut',1e-3,50))] format, could add more than two els to each tuple to determine how to increase the settings and so on
-        #new format is #[['Ehull',['K',1e-3,[],0],['ENCUT',1e-3,50]]]
+        #"convergence": [["Ehull", ["K", 0.01, [], 0]]] format, could add more than two els to each tuple to determine how to increase the settings and so on
         new = []
         for propset in presults['convergence']:
             print('propset',propset, len(propset))
@@ -93,7 +92,7 @@ def notConverged(calc):
             for i in range(1,total):
                 (crit,cond,current,converged) = propset[i]
                 if converged == 1:
-                    new.append(propset)
+                    new.append(propset[i])
                     continue;
                 print('Checking ' + prop + ' convergence ' + ' with respect to ' + crit + '.')
 
