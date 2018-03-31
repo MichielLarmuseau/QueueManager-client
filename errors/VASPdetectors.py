@@ -92,7 +92,7 @@ def notConverged(calc):
             for i in range(1,total):
                 (crit,cond,current,converged) = propset[i]
                 if converged == 1:
-                    new.append(propset[i])
+                    new.append(propset)
                     continue;
                 print('Checking ' + prop + ' convergence ' + ' with respect to ' + crit + '.')
 
@@ -113,10 +113,8 @@ def notConverged(calc):
                         print('Property ' + prop + ' is converged up to ' + str(delta) + '.')
                         if crit == 'K':
                             presults['settingsmod']['KPOINTS']['K'] = ' '.join([str(int(x) - 2) for x in presults['settingsmod']['KPOINTS']['K'].split(' ')])
-                            break;
                         elif crit == 'ENCUT':
                             presults['settingsmod']['INCAR']['ENCUT'] -= 100
-                            break;
                         converged = 1
                 pnew += ((crit,cond,current,converged),)
             print('pnew', pnew)
