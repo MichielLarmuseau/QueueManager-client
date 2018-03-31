@@ -109,7 +109,7 @@ def converge(calc):
                     presults['settingsmod']['INCAR']['ENCUT'] = 100
                 else:
                     presults['settingsmod']['INCAR']['ENCUT'] += 100
-                calc['settings']['INCAR']['ENCUT'] += presults['settingsmod']['INCAR']['ENCUT']
+                calc['settings']['INCAR']['ENCUT'] = int(calc['settings']['INCAR']['ENCUT']) + presults['settingsmod']['INCAR']['ENCUT']
                 break;
     updateResults(presults,calc['parent'])
     print('---end of fix---')
