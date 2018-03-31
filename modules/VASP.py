@@ -234,7 +234,7 @@ def writeSettings(settings):
 def gather(results):
     for key in results:
         if key[0:2] == 'E0':
-            results[key] = float(execute('grep \'energy  without entropy\'  OUTCAR | tail -1 | awk \'{ print $8 }\''))
+            results[key] = float(execute('grep \'energy  without entropy\'  OUTCAR | tail -1 | awk \'{ print $7 }\''))
         elif key == 'Ehull':
             results[key] = float(execute('HTehull ./'))
         elif key == 'volume':
