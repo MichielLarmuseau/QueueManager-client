@@ -9,12 +9,22 @@ def test(calc):
 
 def rmWAVECAR(calc):
     #2: CHGCAR more reliable so clear WAVECAR
-    open('WAVECAR', 'w').close() 
+    if os.path.isfile('WAVECAR'):
+        open('WAVECAR', 'w').close() 
+        
+    if os.path.isfile('WAVECAR.gz'):
+        open('WAVECAR.gz', 'w').close()
+        
     return True
 
 def rmCHGCAR(calc):
     #7: In case of corrupted density
-    open('CHGCAR', 'w').close()
+    if os.path.isfile('CHGCAR'):
+        open('CHGCAR', 'w').close()
+        
+    if os.path.isfile('CHGCAR.gz'):
+        open('CHGCAR.gz', 'w').close()
+        
     return True
 
 def algoSwitch(calc):

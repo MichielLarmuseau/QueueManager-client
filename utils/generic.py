@@ -15,7 +15,7 @@ def execute(command):
 
 def mkdir(command):
     if not os.path.isdir(command):
-        os.mkdir(command)
+        os.makedirs(command)
 
 def remove(command):
     if os.path.isfile(command):

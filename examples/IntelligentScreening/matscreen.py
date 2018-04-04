@@ -18,7 +18,6 @@ submitscript = '' #this is what needs updating for auto error fix resubmit
 user = os.getenv('USER')
 scratch = os.getenv('VSC_SCRATCH')
 
-qdir = os.path.join(os.getenv('VSC_SCRATCH'), 'queues', str(qid))
 
 # Fetching a job and immediately starting it, ensuring we don't run the same job twice
 print('Fetching...')
@@ -29,6 +28,16 @@ if int(cinfo['id']) <= 0:
     print('No calculations left')
     sys.exit()
     
+#Defining directories
+qdir = os.path.join(os.getenv('VSC_SCRATCH'), 'queues', str(qid))
+cdir = [os.path.join(qdir,cinfo['id'],x) for x in ['CALIB','RELAX/vol','RELAX/all','EOS/1.0','EOS/1.02','EOS/0.98','EOS/1.04','EOS/0.96','EOS/1.06','EOS/0.94','ENERGY','DOS','BANDS']]
+cdir = [os.path.join(qdir,'import')] + cdir
+
+
+
+
+
+
 # Starting the actual calculations
 
 cinfo['settings'] = json.loads(cinfo['settings'])
@@ -43,6 +52,9 @@ mkdir(str(cinfo['file']))
 
 os.chdir(os.path.join(qdir,'CALCULATIONS',cinfo['file']))
 step = int(math.ceil(float(cinfo['stat'])/2))
+
+#Configure settings per step
+
 print('Starting step ' + str(step))
 mkdir('./STEP' + str(step))
 os.chdir('./STEP' + str(step))
@@ -74,7 +86,8 @@ if int(parent['continue']) > int(parent['continued']):
     cont(cinfo)
 else:
     print('Initializing job.')
-    inherit(status,qdir,cinfo['file'])
+    inherit(cinfo,cdir[inheritstat],contcar=inheritcontcar,chgcar=inheritchgcar,wavecar=inheritwavecar)
+    #Verify your potcardir, potgen should possibly just become a python function.
     initialize(cinfo['settings'])
 
 if detectSP('POSCAR'):
@@ -99,8 +112,8 @@ if detectSP('POSCAR'):
 #==============================================================================
 
 parallelSetup(cinfo['settings'])
-#if os.getenv('VSC_INSTITUTE_CLUSTER') == 'breniac':
-#    cinfo['settings']['INCAR']['NCORE'] = '28'
+
+
 perror = HT.getResults(cinfo['parent'])
 if perror.get('errors') != None:
     fixerrors(cinfo)
@@ -108,8 +121,9 @@ writeSettings(cinfo['settings'])
 
 #Preprocessing
 # can check eos errors based on e-v.dat
-
+decompress()
 run()
+compress()
 
 #Ehull is with respect to a fixed cutoff so we can't do convergence like this
 #Best might be to make a database of elementary material energies or atoms

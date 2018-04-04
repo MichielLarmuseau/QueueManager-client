@@ -1,45 +1,53 @@
 from HighThroughput.communication.mysql import *
 from HighThroughput.utils.generic import  *
 from HighThroughput.io.VASP import *
-import os,time,shutil,subprocess,linecache, threading, math 
+import os, time, shutil, subprocess, threading, sys
 from HighThroughput.config import vasp
 
 #cleanup function
 
-def inherit2(stat,qdir,cfile):
-    if int(stat) < 2:
-        inputfile = os.path.join(qdir, 'import', str(cfile) + '.vasp')
-    else:
-        inputfile = os.path.join(qdir, 'CALCULATIONS/' + cfile + '/STEP' + str(int(stat)-2), 'CONTCAR')
-        density = os.path.join(qdir, 'CALCULATIONS/' + cfile + '/STEP' + str(int(stat)-2), 'CHGCAR')
-        wavefunctions = os.path.join(qdir, 'CALCULATIONS/' + cfile + '/STEP' + str(int(stat)-2), 'WAVECAR')
+def inherit(calc,path,contcar=True,chgcar=True,wavecar=True):
+    #pstep = int(math.ceil(float(stat)/2.)) -1
+    if path == None:
+        return True
+        #inputfile = os.path.join(qdir, 'import', str(cfile) + '.vasp')
+    
+        #qdir, 'CALCULATIONS/' + cfile + '/STEP' + str(pstep)
+    if contcar:
+        contcarnames = ['CONTCAR','POSCAR' + calc['file'] + '.vasp','POSCAR' + calc['file']]
+        for name in contcarnames:       
+            temp = os.path.join(path, name)
+            if os.path.isfile(temp):
+                inputfile = temp
+                shutil.copy(inputfile, './POSCAR')
+                break;
+
+    if chgcar:
+        chgcarnames = ['CHGCAR.gz','CHGCAR','CHGCAR' + calc['file'] + '.gz','CHGCAR' + calc['file']]
+        for name in chgcarnames:       
+            temp = os.path.join(path, name)
+            if os.path.isfile(temp):
+                density = temp
+                out = 'CHGCAR'
+                if density[-3:] == '.gz':
+                    out += '.gz'
+                shutil.copy(density, out)
+                break;
+            
+    if wavecar:
+        wavecarnames = ['WAVECAR.gz','WAVECAR','WAVECAR' + calc['file']+ '.gz','WAVECAR' + calc['file']]
+        for name in wavecarnames:       
+            temp = os.path.join(path, name)
+            if os.path.isfile(temp):
+                wavecar = temp
+                if wavecar[-3:] == '.gz':
+                    out += '.gz'
+                shutil.copy(wavecar, out)
+                break;
+                
         #if os.path.isfile('CHGCAR'):
         #    os.rename('CHGCAR','CHGCAR.prec')
-        if os.path.isfile(density):
-            shutil.copy(density, './CHGCAR')
-        if os.path.isfile(wavefunctions):
-            shutil.copy(wavefunctions, './WAVECAR')
-    shutil.copy(inputfile, './POSCAR')
-
-    return 0 
-
-def inherit(stat,qdir,cfile):
-    pstep = int(math.ceil(float(stat)/2.)) -1
-    if int(stat) < 2:
-        inputfile = os.path.join(qdir, 'import', str(cfile) + '.vasp')
-    else:
-        inputfile = os.path.join(qdir, 'CALCULATIONS/' + cfile + '/STEP' + str(pstep), 'CONTCAR')
-        density = os.path.join(qdir, 'CALCULATIONS/' + cfile + '/STEP' + str(pstep), 'CHGCAR')
-        wavefunctions = os.path.join(qdir, 'CALCULATIONS/' + cfile + '/STEP' + str(pstep), 'WAVECAR')
-        #if os.path.isfile('CHGCAR'):
-        #    os.rename('CHGCAR','CHGCAR.prec')
-        if os.path.isfile(density):
-            shutil.copy(density, './CHGCAR')
-        if os.path.isfile(wavefunctions):
-            shutil.copy(wavefunctions, './WAVECAR')
-    shutil.copy(inputfile, './POSCAR')
-
-    return 0
+    return True
 
 def abort(cinfo,delay=0,mode = 0):
     import HighThroughput.manage.calculation as manage
@@ -244,3 +252,21 @@ def gather(results):
         elif key == 'volume':
             results[key] = float(execute('grep vol OUTCAR | tail -n 1 | awk \'{print $5}\''))
     return results
+
+def compress():
+    nodes = getNodeInfo()
+    ncore = min(nodes.values())
+    if os.path.isfile('CHGCAR'):
+        os.system('pigz -f -6 -p' + str(ncore) + ' CHGCAR')
+       
+    if os.path.isfile('WAVECAR'):
+        os.system('pigz -f -6 -p' + str(ncore) + ' CHGCAR')
+        
+def decompress():
+    nodes = getNodeInfo()
+    ncore = min(nodes.values())
+    if os.path.isfile('CHGCAR.gz'):
+        os.system('pigz -f -d -6 -p' + str(ncore) + ' CHGCAR.gz')
+       
+    if os.path.isfile('WAVECAR.gz'):
+        os.system('pigz -f -d -6 -p' + str(ncore) + ' WAVECAR.gz')
