@@ -136,6 +136,7 @@ if int(parent['continue']) > int(parent['continued']):
     cont(cinfo)
 else:
     print('Initializing job.')
+    print(cdir[inheritstep])
     inherit(cinfo,cdir[inheritstep],contcar=inheritcontcar,chgcar=inheritchgcar,wavecar=inheritwavecar)
     #Verify your potcardir, potgen should possibly just become a python function.
     initialize(cinfo['settings'])
