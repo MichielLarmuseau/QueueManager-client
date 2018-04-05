@@ -14,10 +14,9 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True):
     
         #qdir, 'CALCULATIONS/' + cfile + '/STEP' + str(pstep)
     if contcar:
-        contcarnames = ['CONTCAR','POSCAR' + calc['file'] + '.vasp','POSCAR' + calc['file']]
+        contcarnames = ['CONTCAR','POSCAR' + calc['file'] + '.vasp','POSCAR' + calc['file'], calc['file'], calc['file'] + '.vasp']
         for name in contcarnames:    
             temp = os.path.join(path, name)
-            print(temp)
             if os.path.isfile(temp):
                 inputfile = temp
                 print('Inheriting geometry from ' + inputfile + '.')
