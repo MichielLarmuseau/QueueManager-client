@@ -4,7 +4,7 @@ import os,subprocess,sys
 from HighThroughput.communication.mysql import *
 
 server = os.getenv('VSC_INSTITUTE_CLUSTER')
-qstat = subprocess.Popen('qstat -c | grep R | awk \'{print $1}\' | cut -d. -f1',stdout=subprocess.PIPE,shell=True).communicate()[0].split()
+qstat = subprocess.Popen('qstat -c | grep R | awk \'{print $1}\' | cut -d. -f1',stdout=subprocess.PIPE,shell=True).communicate()[0].decode().split()
 
 if not isinstance(qstat,str):
     end = ' AND `id` NOT IN (' + ','.join(qstat) + ')'
