@@ -30,7 +30,7 @@ if int(cinfo['id']) <= 0:
     
 #Defining directories
 qdir = os.path.join(os.getenv('VSC_SCRATCH'), 'queues', str(qid))
-cdir = [os.path.join(qdir,cinfo['id'],x) for x in ['CALIB','RELAX/vol','RELAX/all','EOS/1.0','EOS/1.02','EOS/0.98','EOS/1.04','EOS/0.96','EOS/1.06','EOS/0.94','ENERGY','DOS','BANDS']]
+cdir = [os.path.join(qdir,cinfo['id'],x) for x in ['CALIB','RELAX/vol','RELAX/all','EOS/1.0','EOS/1.02','EOS/0.98','EOS/1.04','EOS/0.96','EOS/1.06','EOS/0.94','RELAX/internal','ENERGY','DOS','BANDS']]
 cdir = [os.path.join(qdir,'import')] + cdir
 
 
@@ -53,11 +53,61 @@ mkdir(str(cinfo['file']))
 os.chdir(os.path.join(qdir,'CALCULATIONS',cinfo['file']))
 step = int(math.ceil(float(cinfo['stat'])/2))
 
-#Configure settings per step
+# Configure settings per step
+# By default always inherit
+inheritcontcar = True
+inheritchgcar = True
+inheritwavecar = True
+# Can define this by default, though I've added an if statement for each step anyways
+inheritstep = step - 1
 
+if step == 1:
+    # Calibration
+    inheritstep = 0
+elif step == 2:
+    # Vol relax
+    inheritstep = 1
+elif step == 3:
+    # Full relax
+    inheritstep = 2
+elif step == 4:
+    # EOS 1.0
+    inheritstep = 3
+elif step == 5:
+    # EOS 1.02
+    inheritstep = 4
+elif step == 6:
+    # EOS 0.98
+    inheritstep = 4
+elif step == 7:
+    # EOS 1.04
+    inheritstep = 5
+elif step == 8:
+    # EOS 0.96
+    inheritstep = 6
+elif step == 9:
+    # EOS 1.06
+    inheritstep = 7
+elif step == 10:
+    # EOS 0.94
+    inheritstep = 8
+elif step == 11:
+    # Final internal relaxation
+    inheritstep = 1
+elif step == 12:
+    # Final single point energy calculation
+    inheritstep = 12
+elif step == 13:
+    # DOS
+    inheritstep = 13
+elif step == 14:
+    # BANDS
+    inheritstep = 14
+
+ 
 print('Starting step ' + str(step))
-mkdir('./STEP' + str(step))
-os.chdir('./STEP' + str(step))
+mkdir(cdir[step])
+os.chdir(cdir[step])
 
 # Clearing
 if os.path.isfile('aborted'):
@@ -86,7 +136,7 @@ if int(parent['continue']) > int(parent['continued']):
     cont(cinfo)
 else:
     print('Initializing job.')
-    inherit(cinfo,cdir[inheritstat],contcar=inheritcontcar,chgcar=inheritchgcar,wavecar=inheritwavecar)
+    inherit(cinfo,cdir[inheritstep],contcar=inheritcontcar,chgcar=inheritchgcar,wavecar=inheritwavecar)
     #Verify your potcardir, potgen should possibly just become a python function.
     initialize(cinfo['settings'])
 
@@ -94,9 +144,7 @@ if detectSP('POSCAR'):
     # This could be abstracted further, though the magnetic elements chosen in 
     # detectSP are not uniquely chosen either.
     cinfo['settings']['INCAR']['ISPIN'] = 2
-    
-#Test settings
-    
+        
 #==============================================================================
 # In this section you can also make manual changes to the settings, for example:
 # if int(qid) == 167 or int(qid) == 171:
@@ -125,11 +173,6 @@ decompress()
 run()
 compress()
 
-#Ehull is with respect to a fixed cutoff so we can't do convergence like this
-#Best might be to make a database of elementary material energies or atoms
-#for different cutoffs, then we can calculate the elementary formation or
-#cohesion energy in steps of 50 eV
-convergedict = [('Ehull', [('kp', 1e-3)])]
 # Error catching
 
 finderrors(cinfo)
