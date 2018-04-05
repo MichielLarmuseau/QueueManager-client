@@ -105,7 +105,7 @@ elif step == 14:
     inheritstep = 14
 
  
-print('Starting step ' + str(step))
+print('Starting step ' + str(step) + ' in ' + cdir[step] + '.')
 mkdir(cdir[step])
 os.chdir(cdir[step])
 

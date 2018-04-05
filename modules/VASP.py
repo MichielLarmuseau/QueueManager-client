@@ -19,6 +19,7 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True):
             temp = os.path.join(path, name)
             if os.path.isfile(temp):
                 inputfile = temp
+                print('Inheriting geometry from ' + inputfile + '.')
                 shutil.copy(inputfile, './POSCAR')
                 break;
 
@@ -31,6 +32,7 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True):
                 out = 'CHGCAR'
                 if density[-3:] == '.gz':
                     out += '.gz'
+                print('Inheriting charge density from ' + density + '.')
                 shutil.copy(density, out)
                 break;
             
@@ -42,6 +44,7 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True):
                 wavecar = temp
                 if wavecar[-3:] == '.gz':
                     out += '.gz'
+                print('Inheriting wave functions from ' + wavecar + '.')
                 shutil.copy(wavecar, out)
                 break;
                 
