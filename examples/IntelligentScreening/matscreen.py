@@ -92,7 +92,7 @@ elif step == 8:
     inheritstep = 6
 elif step == 9:
     # EOS 1.06
-    inheritstep = 7
+    inheritstep = 7continue
 elif step == 10:
     # EOS 0.94
     inheritstep = 8
@@ -131,9 +131,9 @@ checkpointStart(cinfo,1800)
 # Here we continue the job if it was checkpointed in a previous job
 
 if 'continue' not in parent['settings'].keys():
-    parent['continue'] = 0
+    parent['settings']['continue'] = 0
 if 'continued' not in  parent['settings'].keys():
-    parent['continued'] = 0
+    parent['settings']['continued'] = 0
 
 if int( parent['settings']['continue']) > int(parent['settings']['continued']):
     print('Continuing job from calculation id: ' + str(cinfo['parent']) + '.')
