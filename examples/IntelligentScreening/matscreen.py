@@ -62,7 +62,8 @@ inheritwavecar = True
 inheritstep = step - 1
 parent = HT.get(cinfo['parent'])
 if parent['parent'] != 0:
-    inheritmod = HT.getResults(parent['parent'])['settingsmod']
+    pparent = HT.getResults(parent['parent'])
+    inheritmod = pparent.get('settingsmod')
     
 if step == 1:
     # Calibration
