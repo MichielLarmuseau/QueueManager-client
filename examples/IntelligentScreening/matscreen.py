@@ -92,7 +92,7 @@ elif step == 8:
     inheritstep = 6
 elif step == 9:
     # EOS 1.06
-    inheritstep = 7continue
+    inheritstep = 7
 elif step == 10:
     # EOS 0.94
     inheritstep = 8
