@@ -61,7 +61,7 @@ inheritwavecar = True
 # Can define this by default, though I've added an if statement for each step anyways
 inheritstep = step - 1
 parent = HT.get(cinfo['parent'])
-if parent['parent'] != 0:
+if parent['parent'] != '0':
     pparent = HT.getResults(parent['parent'])
     inheritmod = pparent.get('settingsmod')
     
