@@ -60,7 +60,8 @@ inheritchgcar = True
 inheritwavecar = True
 # Can define this by default, though I've added an if statement for each step anyways
 inheritstep = step - 1
-
+parent = HT.get(cinfo['parent'])
+inheritmod = HT.getResults(parent['parent'])['settingsmod']
 if step == 1:
     # Calibration
     inheritstep = 0
@@ -103,7 +104,7 @@ elif step == 13:
 elif step == 14:
     # BANDS
     inheritstep = 14
-
+#cleaning up certain chgcar and wavecars in later steps might be good
  
 print('Starting step ' + str(step) + ' in ' + cdir[step] + '.')
 mkdir(cdir[step])
@@ -124,20 +125,19 @@ if os.path.isfile('STOPCAR'):
 checkpointStart(cinfo,1800)
 
 # Here we continue the job if it was checkpointed in a previous job
-parent = HT.getSettings(cinfo['parent'])
 
-if 'continue' not in parent.keys():
+if 'continue' not in parent['settings'].keys():
     parent['continue'] = 0
-if 'continued' not in parent.keys():
+if 'continued' not in  parent['settings'].keys():
     parent['continued'] = 0
 
-if int(parent['continue']) > int(parent['continued']):
+if int( parent['settings']['continue']) > int(parent['settings']['continued']):
     print('Continuing job from calculation id: ' + str(cinfo['parent']) + '.')
     cont(cinfo)
 else:
     print('Initializing job.')
     print(cdir[inheritstep])
-    inherit(cinfo,cdir[inheritstep],contcar=inheritcontcar,chgcar=inheritchgcar,wavecar=inheritwavecar)
+    inherit(cinfo,cdir[inheritstep],contcar=inheritcontcar,chgcar=inheritchgcar,wavecar=inheritwavecar,settingsmod=inheritmod)
     #Verify your potcardir, potgen should possibly just become a python function.
     initialize(cinfo['settings'])
 
@@ -163,7 +163,7 @@ if detectSP('POSCAR'):
 parallelSetup(cinfo['settings'])
 
 
-perror = HT.getResults(cinfo['parent'])
+perror = parent['results']
 if perror.get('errors') != None:
     fixerrors(cinfo)
 writeSettings(cinfo['settings'])

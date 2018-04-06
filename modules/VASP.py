@@ -3,10 +3,11 @@ from HighThroughput.utils.generic import  *
 from HighThroughput.io.VASP import *
 import os, time, shutil, subprocess, threading, sys
 from HighThroughput.config import vasp
+import HighThroughput.manage.calculation as manage
 
 #cleanup function
 
-def inherit(calc,path,contcar=True,chgcar=True,wavecar=True):
+def inherit(calc,path,contcar=True,chgcar=True,wavecar=True,settingsmod=None):
     #pstep = int(math.ceil(float(stat)/2.)) -1
     if path == None:
         return True
@@ -34,6 +35,8 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True):
                     out += '.gz'
                 print('Inheriting charge density from ' + density + '.')
                 shutil.copy(density, out)
+                if calc['settings']['INCAR'].get('ICHARG') == None:
+                    calc['settings']['INCAR']['ICHARG'] = 1
                 break;
             
     if wavecar:
@@ -48,12 +51,25 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True):
                 shutil.copy(wavecar, out)
                 break;
                 
+    if settingsmod:
+        presults = manage.getResults(calc['parent'])
+        presults['settingsmod'] = settingsmod
+        manage.updateResults(presults,calc['parent'])
+        
+        if settingsmod.get('K') != None and calc['settings']['KPOINTS'].get('K') != None:
+            curkp = [int(x) for x in calc['settings']['KPOINTS']['K'].split(' ')]
+            curmod = [int(x) for x in settingsmod['KPOINTS']['K'].split(' ')]
+            calc['settings']['KPOINTS']['K'] = ' '.join([str(curkp[x] + curmod[x]) for x in range(3)])
+    
+        if settingsmod.get('ENCUT') != None:
+            calc['settings']['INCAR']['ENCUT'] = int(calc['settings']['INCAR']['ENCUT']) + settingsmod['INCAR']['ENCUT']
+
+        
         #if os.path.isfile('CHGCAR'):
         #    os.rename('CHGCAR','CHGCAR.prec')
-    return True
+    return calc
 
 def abort(cinfo,delay=0,mode = 0):
-    import HighThroughput.manage.calculation as manage
     # either switch between electronic and ionic or auto based on ibrion is possible
     #for now 0 is electronic stop, 1 ionic
     time.sleep(delay)
@@ -107,12 +123,26 @@ def cont(calc):
         os.rename('XDATCAR','XDATCAR.bak' + str(bakx))
     if os.path.isfile('tempout') and os.stat('tempout').st_size > 0:
         os.rename('tempout','tempout.bak' + str(bakt))
+        
     psettings = manage.getSettings(calc['parent'])
+    presults = manage.getResults(calc['parent'])
+    
     if 'continued' not in psettings.keys():
         psettings['continued'] = 1
     else:
         psettings['continued'] += 1
+        
+    if presults.get('settingsmod') != None:
+        if 'K' in presults['settingsmod'].keys() and calc['settings']['KPOINTS'].get('K') != None:
+            curkp = [int(x) for x in calc['settings']['KPOINTS']['K'].split(' ')]
+            curmod = [int(x) for x in presults['settingsmod']['KPOINTS']['K'].split(' ')]
+            calc['settings']['KPOINTS']['K'] = ' '.join([str(curkp[x] + curmod[x]) for x in range(3)])
+    
+        if 'ENCUT' in presults['settingsmod'].keys():
+            calc['settings']['INCAR']['ENCUT'] = int(calc['settings']['INCAR']['ENCUT']) + presults['settingsmod']['INCAR']['ENCUT']
+    
     manage.updateSettings(psettings, calc['parent'])
+    
     return calc
 
 def finish():
