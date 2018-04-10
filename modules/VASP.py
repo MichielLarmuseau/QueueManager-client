@@ -56,7 +56,7 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True,settingsmod=None):
         presults['settingsmod'] = settingsmod
         manage.updateResults(presults,calc['parent'])
         
-        if settingsmod.get('K') != None and calc['settings']['KPOINTS'].get('K') != None:
+        if settingsmod.get('KPOINTS').get('K') != None and calc['settings']['KPOINTS'].get('K') != None:
             curkp = [int(x) for x in calc['settings']['KPOINTS']['K'].split(' ')]
             curmod = [int(x) for x in settingsmod['KPOINTS']['K'].split(' ')]
             calc['settings']['KPOINTS']['K'] = ' '.join([str(curkp[x] + curmod[x]) for x in range(3)])
@@ -134,7 +134,7 @@ def cont(calc):
     print('==============')
     print(presults)
     if presults.get('settingsmod') != None:
-        if 'K' in presults['settingsmod'].keys() and calc['settings']['KPOINTS'].get('K') != None:
+        if settingsmod.get('KPOINTS').get('K') != None and calc['settings']['KPOINTS'].get('K') != None:
             curkp = [int(x) for x in calc['settings']['KPOINTS']['K'].split(' ')]
             curmod = [int(x) for x in presults['settingsmod']['KPOINTS']['K'].split(' ')]
             calc['settings']['KPOINTS']['K'] = ' '.join([str(curkp[x] + curmod[x]) for x in range(3)])
