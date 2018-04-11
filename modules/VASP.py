@@ -134,7 +134,7 @@ def cont(calc):
     print('==============')
     print(presults)
     if presults.get('settingsmod') != None:
-        if settingsmod.get('KPOINTS').get('K') != None and calc['settings']['KPOINTS'].get('K') != None:
+        if presults['settingsmod'].get('KPOINTS').get('K') != None and calc['settings']['KPOINTS'].get('K') != None:
             curkp = [int(x) for x in calc['settings']['KPOINTS']['K'].split(' ')]
             curmod = [int(x) for x in presults['settingsmod']['KPOINTS']['K'].split(' ')]
             calc['settings']['KPOINTS']['K'] = ' '.join([str(curkp[x] + curmod[x]) for x in range(3)])
