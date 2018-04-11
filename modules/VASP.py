@@ -64,7 +64,6 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True,settingsmod=None):
         if settingsmod.get('ENCUT') != None:
             calc['settings']['INCAR']['ENCUT'] = int(calc['settings']['INCAR']['ENCUT']) + settingsmod['INCAR']['ENCUT']
 
-        
         #if os.path.isfile('CHGCAR'):
         #    os.rename('CHGCAR','CHGCAR.prec')
     return calc

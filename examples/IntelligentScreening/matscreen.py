@@ -135,6 +135,10 @@ if 'continue' not in parent['settings'].keys():
 if 'continued' not in  parent['settings'].keys():
     parent['settings']['continued'] = 0
 
+perror = parent['results']
+if perror.get('errors') != None:
+    fixerrors(cinfo)
+
 if int( parent['settings']['continue']) > int(parent['settings']['continued']):
     print('Continuing job from calculation id: ' + str(cinfo['parent']) + '.')
     cont(cinfo)
@@ -166,10 +170,6 @@ if detectSP('POSCAR'):
 
 parallelSetup(cinfo['settings'])
 
-
-perror = parent['results']
-if perror.get('errors') != None:
-    fixerrors(cinfo)
 writeSettings(cinfo['settings'])
 
 #Preprocessing
