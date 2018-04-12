@@ -65,6 +65,7 @@ inheritmod = None
 if parent['parent'] != '0':
     pparent = HT.getResults(parent['parent'])
     inheritmod = pparent.get('settingsmod')
+    print('The following settingsmod will be inherited: ' + inheritmod)
     
 if step == 1:
     # Calibration
@@ -191,7 +192,7 @@ print('Ending Calculation')
 # Checkpoint abortion
 if os.path.isfile('aborted'):
     print('Calculation aborted')
-    execute(submitscript + ' ' + str(qid) + ' ' + str(submit_arg))
+    #execute(submitscript + ' ' + str(qid) + ' ' + str(submit_arg))
     sys.exit()
     
 # Post-processing (run hooks? or extra functions in VASP module)
@@ -210,6 +211,7 @@ else:
     results = gather(results)
 
     print('Updating results.')
+    print(results)
 # updateresults could be assumed from dictionary keys and automated.
     HT.updateResults(results, cinfo['id'])
     

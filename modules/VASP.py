@@ -55,11 +55,13 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True,settingsmod=None):
         presults = manage.getResults(calc['parent'])
         presults['settingsmod'] = settingsmod
         manage.updateResults(presults,calc['parent'])
-        
-        if settingsmod.get('KPOINTS').get('K') != None and calc['settings']['KPOINTS'].get('K') != None:
+        print('These mods are inherited:')
+        print(presults)
+        if settingsmod.get('KPOINTS').get('K') != None and calc['settings'].get('KPOINTS').get('K') != None:
             curkp = [int(x) for x in calc['settings']['KPOINTS']['K'].split(' ')]
             curmod = [int(x) for x in settingsmod['KPOINTS']['K'].split(' ')]
             calc['settings']['KPOINTS']['K'] = ' '.join([str(curkp[x] + curmod[x]) for x in range(3)])
+            print('Calibration update to kpoints executed.')
     
         if settingsmod.get('ENCUT') != None:
             calc['settings']['INCAR']['ENCUT'] = int(calc['settings']['INCAR']['ENCUT']) + settingsmod['INCAR']['ENCUT']
