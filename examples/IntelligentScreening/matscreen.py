@@ -65,7 +65,8 @@ inheritmod = None
 if parent['parent'] != '0':
     pparent = HT.getResults(parent['parent'])
     inheritmod = pparent.get('settingsmod')
-    print('The following settingsmod will be inherited: ' + inheritmod)
+    print('The following settingsmod will be inherited: ')
+    print(inheritmod)
     
 if step == 1:
     # Calibration
