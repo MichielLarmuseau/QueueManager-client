@@ -211,7 +211,6 @@ else:
     results = gather(results)
 
     print('Updating results.')
-    print(results)
 # updateresults could be assumed from dictionary keys and automated.
     HT.updateResults(results, cinfo['id'])
     
