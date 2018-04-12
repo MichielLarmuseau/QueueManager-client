@@ -122,6 +122,7 @@ def updateResults(results,cid = None):
         template = mysql_query('SELECT * FROM `templates` WHERE `id` = ' + str(results))
         results = template['template']
 
+    print('Updating results of calculation ' + str(cid) + ' to ' + results + '.')
     tempdict = {'id' : cid, 'results': results}
     return modify(tempdict)
 

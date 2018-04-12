@@ -85,7 +85,6 @@ def notConverged(calc):
         #"convergence": [["Ehull", ["K", 0.01, [], 0]]] format, could add more than two els to each tuple to determine how to increase the settings and so on
         new = []
         for propset in presults['convergence']:
-            print('propset',propset, len(propset))
             total = len(propset)
             prop = propset[0]
             pnew = (prop,)
@@ -117,9 +116,7 @@ def notConverged(calc):
                             presults['settingsmod']['INCAR']['ENCUT'] -= 100
                         converged = 1
                 pnew += ((crit,cond,current,converged),)
-            print('pnew', pnew)
             new.append(pnew)
-    print('new',new)
     presults['convergence'] = new
     updateResults(presults,calc['parent'])               
     return error

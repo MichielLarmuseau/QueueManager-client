@@ -293,16 +293,20 @@ def compress():
     nodes = getNodeInfo()
     ncore = min(nodes.values())
     if os.path.isfile('CHGCAR'):
-        os.system('pigz -f -6 -p' + str(ncore) + ' CHGCAR')
+        print('Compressing CHGCAR in ' + os.getcwd() + '.')
+        execute('pigz -f -6 -p' + str(ncore) + ' CHGCAR')
        
     if os.path.isfile('WAVECAR'):
-        os.system('pigz -f -6 -p' + str(ncore) + ' CHGCAR')
+        print('Compressing WAVECAR in ' + os.getcwd() + '.')
+        execute('pigz -f -6 -p' + str(ncore) + ' CHGCAR')
         
 def decompress():
     nodes = getNodeInfo()
     ncore = min(nodes.values())
     if os.path.isfile('CHGCAR.gz'):
-        os.system('pigz -f -d -6 -p' + str(ncore) + ' CHGCAR.gz')
+        print('Decompressing CHGCAR.gz in ' + os.getcwd() + '.')
+        execute('pigz -f -d -6 -p' + str(ncore) + ' CHGCAR.gz')
        
     if os.path.isfile('WAVECAR.gz'):
-        os.system('pigz -f -d -6 -p' + str(ncore) + ' WAVECAR.gz')
+        print('Decompressing WAVECAR.gz in ' + os.getcwd() + '.')
+        execute('pigz -f -d -6 -p' + str(ncore) + ' WAVECAR.gz')
