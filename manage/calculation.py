@@ -1,4 +1,4 @@
-from ..communication.mysql import *
+from ..communication.mysql import mysql_query
 import json,ase.io,os
 import HighThroughput.io.CIF as CIF
 
@@ -76,7 +76,7 @@ def modify(params):
                 query += str(params[key])
             query += ', '
     query = query[:-2] + ' WHERE `id` = ' + str(params['id'])
-    result = int(bool(mysql_query(query)))
+    result = int(bool(mysql_query(query.translate(str.maketrans({"'":  r"\'"})))))
     print('Modify query' + query)
     if (result == 1):
         print('The calculation has been modified. Please verify.')
