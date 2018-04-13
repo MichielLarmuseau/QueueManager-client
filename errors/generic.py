@@ -87,5 +87,7 @@ def fixerrors(calc):
         #results['errorfix'] = json.dumps(results['errorfix'])
     results2 = getResults(calc['parent'])
     results2['errorfix'] = results['errorfix']
+    print('This is the final errorfix update.')
+    print(results2)
     updateResults(results2,calc['parent'])    
     return 0
