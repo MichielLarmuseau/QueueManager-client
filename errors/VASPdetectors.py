@@ -91,6 +91,7 @@ def notConverged(calc):
             for i in range(1,total):
                 (crit,cond,current,converged) = propset[i]
                 if converged == 1:
+                    propset[i][-1] = 1
                     pnew += (tuple(propset[i]),)
                     continue;
                 print('Checking ' + prop + ' convergence ' + ' with respect to ' + crit + '.')

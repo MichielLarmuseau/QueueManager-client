@@ -80,7 +80,7 @@ if parent['parent'] != '0':
 #DEBUG
 cinfo['settings']['INCAR']['NSW'] = 0
 cinfo['settings']['KPOINTS']['K'] = '2 2 2'
-
+cinfo['settings']['INCAR']['LWAVE'] = '.TRUE.'
 if step == 1:
     # Calibration
     inheritstep = 0
@@ -162,7 +162,6 @@ if int( parent['settings']['continue']) > int(parent['settings']['continued']):
     cont(cinfo)
 else:
     print('Initializing job.')
-    print(cdir[inheritstep])
     inherit(cinfo,cdir[inheritstep],contcar=inheritcontcar,chgcar=inheritchgcar,wavecar=inheritwavecar,settingsmod=inheritmod)
     #Verify your potcardir, potgen should possibly just become a python function.
     initialize(cinfo['settings'])
@@ -234,10 +233,9 @@ cinfo['settings']['POTCAR'] = POTCAR_version.strip().replace('\n',', ')
 HT.updateSettings(cinfo['settings'], cinfo['id'])
 newcalc = int(HT.fetch(str(qid)))
 
-""" if newcalc > 0:
+if newcalc > 0 and step < 4:
     execute(submitscript + ' ' + str(qid) + ' ' + str(submit_arg))
     print('Submitted new calculation in queue ' + str(qid) + '.')
 else:
     print('Queue ' + str(qid) + ' is finished.')
-"""
 print('Calculation ended.')

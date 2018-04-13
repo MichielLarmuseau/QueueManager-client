@@ -21,7 +21,7 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True,settingsmod=None):
             if os.path.isfile(temp):
                 inputfile = temp
                 print('Inheriting geometry from ' + inputfile + '.')
-                shutil.copy(inputfile, './POSCAR')
+                shutil.copy2(inputfile, './POSCAR')
                 break;
 
     if chgcar:
@@ -34,7 +34,7 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True,settingsmod=None):
                 if density[-3:] == '.gz':
                     out += '.gz'
                 print('Inheriting charge density from ' + density + '.')
-                shutil.copy(density, out)
+                shutil.copy2(density, out)
                 if calc['settings']['INCAR'].get('ICHARG') == None:
                     calc['settings']['INCAR']['ICHARG'] = 1
                 break;
@@ -45,18 +45,19 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True,settingsmod=None):
             temp = os.path.join(path, name)
             if os.path.isfile(temp):
                 wavecar = temp
+                out = 'WAVECAR'
                 if wavecar[-3:] == '.gz':
                     out += '.gz'
                 print('Inheriting wave functions from ' + wavecar + '.')
-                shutil.copy(wavecar, out)
+                shutil.copy2(wavecar, out)
                 break;
                 
     if settingsmod:
         presults = manage.getResults(calc['parent'])
         presults['settingsmod'] = settingsmod
         manage.updateResults(presults,calc['parent'])
-        print('These mods are inherited:')
-        print(presults)
+        print('These setting mods are inherited:')
+        print(presults['settingsmod'])
         if settingsmod.get('KPOINTS').get('K') != None and calc['settings'].get('KPOINTS').get('K') != None:
             curkp = [int(x) for x in calc['settings']['KPOINTS']['K'].split(' ')]
             curmod = [int(x) for x in settingsmod['KPOINTS']['K'].split(' ')]
