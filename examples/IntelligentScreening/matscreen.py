@@ -81,7 +81,10 @@ if parent['parent'] != '0':
 #DEBUG
 cinfo['settings']['INCAR']['NSW'] = 0
 cinfo['settings']['KPOINTS']['K'] = '2 2 2'
+cinfo['settings']['INCAR']['LCHARGE'] = '.TRUE.'
 cinfo['settings']['INCAR']['LWAVE'] = '.TRUE.'
+cinfo['settings']['INCAR']['ISTART'] = 1
+cinfo['settings']['INCAR']['ICHARG'] = 1
 if step == 1:
     # Calibration
     inheritstep = 0
@@ -195,7 +198,10 @@ print('Ending Calculation')
 # Checkpoint abortion
 if os.path.isfile('aborted'):
     print('Calculation aborted')
-    execute(submitscript + ' ' + str(qid) + ' ' + str(submit_arg))
+    if cinfo['server'] != 'breniac':
+        execute(submitscript + ' ' + str(qid) + ' ' + str(submit_arg))
+    else:
+        execute('ssh login1 "' + submitscript + ' ' + str(qid) + ' ' + str(submit_arg) + '"')
     sys.exit()
     
 # Post-processing (run hooks? or extra functions in VASP module)
@@ -235,7 +241,10 @@ HT.updateSettings(cinfo['settings'], cinfo['id'])
 newcalc = int(HT.fetch(str(qid)))
 
 if newcalc > 0 and step < 4:
-    execute(submitscript + ' ' + str(qid) + ' ' + str(submit_arg))
+    if cinfo['server'] != 'breniac':
+        execute(submitscript + ' ' + str(qid) + ' ' + str(submit_arg))
+    else:
+        execute('ssh login1 "' + submitscript + ' ' + str(qid) + ' ' + str(submit_arg) + '"')
     print('Submitted new calculation in queue ' + str(qid) + '.')
 else:
     print('Queue ' + str(qid) + ' is finished.')
