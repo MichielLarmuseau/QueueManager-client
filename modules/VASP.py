@@ -22,7 +22,7 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True,settingsmod=None,res
                 inputfile = temp
                 print('Inheriting geometry from ' + inputfile + '.')
                 shutil.copy2(inputfile, './POSCAR')
-                rescalePOSCAR('./POSCAR',rescale)
+                rescalePOSCAR('POSCAR',rescale)
                 break;
 
     if chgcar:
