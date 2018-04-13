@@ -78,8 +78,8 @@ if parent['parent'] != '0':
 #==============================================================================
 
 #DEBUG
-cinfo['INCAR']['NSW'] = 0
-cinfo['KPOINTS']['K'] = '2 2 2'
+cinfo['settings']['INCAR']['NSW'] = 0
+cinfo['settings']['KPOINTS']['K'] = '2 2 2'
 
 if step == 1:
     # Calibration
@@ -88,11 +88,11 @@ elif step == 2:
     # Vol relax
     inheritstep = 1
     # Modify the template
-    cinfo['INCAR']['ISIF'] = 7
+    cinfo['settings']['INCAR']['ISIF'] = 7
 elif step == 3:
     # Full relax
     inheritstep = 2
-    cinfo['INCAR']['ISIF'] = 3
+    cinfo['settings']['INCAR']['ISIF'] = 3
 elif step == 4:
     # EOS 1.0
     inheritstep = 3
