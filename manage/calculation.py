@@ -76,7 +76,7 @@ def modify(params):
                 query += str(params[key])
             query += ', '
     query = query[:-2] + ' WHERE `id` = ' + str(params['id'])
-    query = query.translate(str.maketrans({"'":  r"\'"}))
+    #query = query.translate(str.maketrans({"'":  r"\'"}))
     result = int(bool(mysql_query(query)))
     print('Modify query' + query)
     if (result == 1):

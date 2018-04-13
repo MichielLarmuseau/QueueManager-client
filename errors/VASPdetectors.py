@@ -1,4 +1,4 @@
-import subprocess, os
+import subprocess, os,json
 from HighThroughput.manage.calculation import getResults,updateResults
 from HighThroughput.modules.VASP import gather
 import numpy as np
@@ -117,6 +117,6 @@ def notConverged(calc):
                         converged = 1
                 pnew += ((crit,cond,current,converged),)
             new.append(pnew)
-    presults['convergence'] = new
+    presults['convergence'] = json.dumps(new).translate(str.maketrans({"'":  r"\'"}))
     updateResults(presults,calc['parent'])               
     return error
