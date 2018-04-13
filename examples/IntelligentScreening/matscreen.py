@@ -62,11 +62,6 @@ if parent['parent'] != '0':
     inheritmod = pparent.get('settingsmod')
     print('The following settingsmod will be inherited: ')
     print(inheritmod)
-
-if detectSP('POSCAR'):
-    # This could be abstracted further, though the magnetic elements chosen in 
-    # detectSP are not uniquely chosen either.
-    cinfo['settings']['INCAR']['ISPIN'] = 2
         
 #==============================================================================
 # In this section you can also make manual changes to the settings, for example:
@@ -172,7 +167,10 @@ else:
     #Verify your potcardir, potgen should possibly just become a python function.
     initialize(cinfo['settings'])
 
-
+if detectSP('POSCAR'):
+    # This could be abstracted further, though the magnetic elements chosen in 
+    # detectSP are not uniquely chosen either.
+    cinfo['settings']['INCAR']['ISPIN'] = 2
 
 parallelSetup(cinfo['settings'])
 
