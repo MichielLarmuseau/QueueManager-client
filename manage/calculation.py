@@ -78,7 +78,6 @@ def modify(params):
     query = query[:-2] + ' WHERE `id` = ' + str(params['id'])
     #query = query.translate(str.maketrans({"'":  r"\'"}))
     result = int(bool(mysql_query(query)))
-    print('Modify query' + query)
     if (result == 1):
         print('The calculation has been modified. Please verify.')
     elif (result == 0):
@@ -123,7 +122,7 @@ def updateResults(results,cid = None):
         template = mysql_query('SELECT * FROM `templates` WHERE `id` = ' + str(results))
         results = template['template']
 
-    print('Updating results of calculation ' + str(cid) + ' to ' + results + '.')
+    print('Updating results of calculation ' + str(cid) + '.')
     tempdict = {'id' : cid, 'results': results}
     return modify(tempdict)
 
