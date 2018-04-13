@@ -133,8 +133,8 @@ def cont(calc):
         psettings['continued'] = 1
     else:
         psettings['continued'] += 1
-    print('==============')
-    print(presults)
+
+
     if presults.get('settingsmod') != None:
         if presults['settingsmod'].get('KPOINTS').get('K') != None and calc['settings']['KPOINTS'].get('K') != None:
             curkp = [int(x) for x in calc['settings']['KPOINTS']['K'].split(' ')]
@@ -146,7 +146,7 @@ def cont(calc):
     
     manage.updateSettings(psettings, calc['parent'])
     manage.updateResults(presults, calc['parent'])
-    print(calc['settings'])
+
     return calc
 
 def finish():

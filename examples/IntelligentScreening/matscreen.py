@@ -11,8 +11,9 @@ from HighThroughput.modules.VASP import *
 from HighThroughput.errors.generic import *
 
 qid = sys.argv[1]
+#Can change number of nodes based on step and kpoints too of course for the next submit
 submit_arg = '' + sys.argv[2] + ' ' + sys.argv[3] + ' ' + sys.argv[4]
-submitscript = 'matscreen' #this is what needs updating for auto error fix resubmit
+submitscript = '/scratch/leuven/404/vsc40479/queues/246/matscreen' #this is what needs updating for auto error fix resubmit
 
 # Set up the queue directory paths, this is always the same and should be moved to the .highthroughput file in a dictionary except for manual overrides
 user = os.getenv('USER')
