@@ -69,7 +69,7 @@ def writeKPOINTS(template,directory=None):
     KPOINTS.write(kfile)
     return KPOINTS.close()
     
-def rescalePOSCAR(poscar,scale=1.0,directory=os.getcwd()):
+def rescalePOSCAR(poscar,scale=1.0,directory=None):
     if directory == None:
         directory = os.getcwd()
         
