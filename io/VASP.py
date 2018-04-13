@@ -81,6 +81,6 @@ def rescalePOSCAR(poscar,scale=1.0,directory=os.getcwd()):
             for i in range(2,5):
                 current[i] = ' '.join([float(x)*float(scale[0]) for x in current[i].strip().split(' ')]) + '\n'
         oldpos.seek(0)
-        oldpos.write(''.join(current()))
+        oldpos.write(''.join(current))
         oldpos.truncate()
     
