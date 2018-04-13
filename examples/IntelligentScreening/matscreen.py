@@ -129,7 +129,9 @@ elif step == 10:
     rescale = 0.94/0.96
 elif step == 11:
     # Final internal relaxation
-    inheritstep = 1
+    cinfo['settings']['INCAR']['ISIF'] = 2
+    rescale = -parent['results']['V0']
+    inheritstep = 4
 elif step == 12:
     # Final single point energy calculation
     inheritstep = 12
@@ -249,7 +251,7 @@ cinfo['settings']['POTCAR'] = POTCAR_version.strip().replace('\n',', ')
 HT.updateSettings(cinfo['settings'], cinfo['id'])
 newcalc = int(HT.fetch(str(qid)))
 
-if newcalc > 0 and step < 4:
+if newcalc > 0 and step < 9:
     if cinfo['server'] != 'breniac':
         execute(submitscript + ' ' + str(qid) + ' ' + str(submit_arg))
     else:
