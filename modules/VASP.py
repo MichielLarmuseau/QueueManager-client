@@ -7,7 +7,7 @@ import HighThroughput.manage.calculation as manage
 
 #cleanup function
 
-def inherit(calc,path,contcar=True,chgcar=True,wavecar=True,settingsmod=None):
+def inherit(calc,path,contcar=True,chgcar=True,wavecar=True,settingsmod=None,rescale=1.0):
     #pstep = int(math.ceil(float(stat)/2.)) -1
     if path == None:
         return True
@@ -22,6 +22,7 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True,settingsmod=None):
                 inputfile = temp
                 print('Inheriting geometry from ' + inputfile + '.')
                 shutil.copy2(inputfile, './POSCAR')
+                rescale('./POSCAR',rescale)
                 break;
 
     if chgcar:

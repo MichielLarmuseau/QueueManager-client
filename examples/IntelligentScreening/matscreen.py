@@ -63,6 +63,7 @@ if parent['parent'] != '0':
     inheritmod = pparent.get('settingsmod')
     print('The following settingsmod will be inherited: ')
     print(inheritmod)
+    rescale = 1.0
         
 #==============================================================================
 # In this section you can also make manual changes to the settings, for example:
@@ -79,6 +80,7 @@ if parent['parent'] != '0':
 #==============================================================================
 
 #DEBUG
+
 cinfo['settings']['INCAR']['NSW'] = 0
 cinfo['settings']['KPOINTS']['K'] = '2 2 2'
 cinfo['settings']['INCAR']['LCHARGE'] = '.TRUE.'
@@ -100,24 +102,31 @@ elif step == 3:
 elif step == 4:
     # EOS 1.0
     inheritstep = 3
+    rescale = 1.0
 elif step == 5:
     # EOS 1.02
     inheritstep = 4
+    rescale = 1.02
 elif step == 6:
     # EOS 0.98
     inheritstep = 4
+    rescale = 0.98
 elif step == 7:
     # EOS 1.04
     inheritstep = 5
+    rescale = 1.04/1.02
 elif step == 8:
     # EOS 0.96
     inheritstep = 6
+    rescale = 0.96/0.98
 elif step == 9:
     # EOS 1.06
     inheritstep = 7
+    rescale = 1.06/1.04
 elif step == 10:
     # EOS 0.94
     inheritstep = 8
+    rescale = 0.94/0.96
 elif step == 11:
     # Final internal relaxation
     inheritstep = 1
@@ -166,7 +175,7 @@ if int( parent['settings']['continue']) > int(parent['settings']['continued']):
     cont(cinfo)
 else:
     print('Initializing job.')
-    inherit(cinfo,cdir[inheritstep],contcar=inheritcontcar,chgcar=inheritchgcar,wavecar=inheritwavecar,settingsmod=inheritmod)
+    inherit(cinfo,cdir[inheritstep],contcar = inheritcontcar,chgcar = inheritchgcar,wavecar = inheritwavecar,settingsmod = inheritmod,rescale = rescale)
     #Verify your potcardir, potgen should possibly just become a python function.
     initialize(cinfo['settings'])
 

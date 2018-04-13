@@ -1,6 +1,6 @@
 import os
 
-def readINCAR(directory=os.getcwd()):
+def readINCAR(directory=None):
     if directory == None:
         directory = os.getcwd()
     template = dict()
@@ -69,4 +69,16 @@ def writeKPOINTS(template,directory=None):
     KPOINTS.write(kfile)
     return KPOINTS.close()
     
+def rescalePOSCAR(poscar,scale=1.0,directory=os.getcwd()):
+    if directory == None:
+        directory = os.getcwd()
         
+    with open(os.path.join(directory,poscar),'w+') as oldpos:
+        current = oldpos.readlines()
+        if len(scale) == 1:
+            current[1] = str(float(scale)*float(oldpos[1].strip())) + '\n'
+        elif len(scale) == 3:
+            for i in range(2,5):
+                current[i] = ' '.join([float(x)*float(scale[0]) for x in current[i].strip().split(' ')]) + '\n'
+        oldpos.write(''.join(current())       
+    
