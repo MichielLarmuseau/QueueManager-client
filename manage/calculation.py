@@ -69,7 +69,7 @@ def modify(params):
         if key != 'id':
             query += '`' + key  + '` ='
             if isinstance(params[key],dict):
-                query  += '\'' + json.dumps(params[key]) + '\''
+                query  += '\'' + json.dumps(params[key]).translate(str.maketrans({"'":  r"\'"})) + '\''
             elif not str(params[key]).isdigit():
                 query += '\'' + str(params[key]) + '\''
             else:

@@ -117,6 +117,6 @@ def notConverged(calc):
                         converged = 1
                 pnew += ((crit,cond,current,converged),)
             new.append(pnew)
-    presults['convergence'] = json.dumps(new).translate(str.maketrans({"'":  r"\'"}))
+   # presults['convergence'] = json.dumps(new).translate(str.maketrans({"'":  r"\'"}))
     updateResults(presults,calc['parent'])               
     return error
