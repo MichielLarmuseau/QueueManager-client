@@ -75,7 +75,7 @@ def rescalePOSCAR(poscar,scale=1.0,directory=os.getcwd()):
         
     with open(os.path.join(directory,poscar),'w+') as oldpos:
         current = oldpos.readlines()
-        if len(scale) == 1:
+        if isinstance(scale,float) or isinstance(scale,int) or isinstance(scale,str):
             current[1] = str(float(scale)*float(oldpos[1].strip())) + '\n'
         elif len(scale) == 3:
             for i in range(2,5):
