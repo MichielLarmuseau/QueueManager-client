@@ -33,11 +33,6 @@ qdir = os.path.join(os.getenv('VSC_SCRATCH'), 'queues', str(qid))
 cdir = [os.path.join(qdir,'CALCULATIONS',cinfo['file'],x) for x in ['CALIB','RELAX/vol','RELAX/all','EOS/1.0','EOS/1.02','EOS/0.98','EOS/1.04','EOS/0.96','EOS/1.06','EOS/0.94','RELAX/internal','ENERGY','DOS','BANDS']]
 cdir = [os.path.join(qdir,'import')] + cdir
 
-
-
-
-
-
 # Starting the actual calculations
 
 cinfo['settings'] = json.loads(cinfo['settings'])
@@ -67,16 +62,42 @@ if parent['parent'] != '0':
     inheritmod = pparent.get('settingsmod')
     print('The following settingsmod will be inherited: ')
     print(inheritmod)
-    
+
+if detectSP('POSCAR'):
+    # This could be abstracted further, though the magnetic elements chosen in 
+    # detectSP are not uniquely chosen either.
+    cinfo['settings']['INCAR']['ISPIN'] = 2
+        
+#==============================================================================
+# In this section you can also make manual changes to the settings, for example:
+# if int(qid) == 167 or int(qid) == 171:
+#     cinfo['settings']['KPOINTS']['K'] = '12 12 12'
+#     cinfo['settings']['INCAR']['NKRED'] = '2'
+# cinfo['settings']['INCAR']['LSUBROT'] = '.TRUE.'
+# if int(cfile) == 10025486:
+#     cinfo['settings']['INCAR']['ALGO'] = 'A'
+#     cinfo['settings']['INCAR']['NELM'] = 30
+#     cinfo['settings']['INCAR']['TIME'] = 1.95
+# if int(cfile) == 10031153:
+#     cinfo['settings']['INCAR']['MAGMOM'] = '2*1.0000 2*-1.0000'
+#==============================================================================
+
+#DEBUG
+cinfo['INCAR']['NSW'] = 0
+cinfo['KPOINTS']['K'] = '2 2 2'
+
 if step == 1:
     # Calibration
     inheritstep = 0
 elif step == 2:
     # Vol relax
     inheritstep = 1
+    # Modify the template
+    cinfo['INCAR']['ISIF'] = 7
 elif step == 3:
     # Full relax
     inheritstep = 2
+    cinfo['INCAR']['ISIF'] = 3
 elif step == 4:
     # EOS 1.0
     inheritstep = 3
@@ -151,24 +172,7 @@ else:
     #Verify your potcardir, potgen should possibly just become a python function.
     initialize(cinfo['settings'])
 
-if detectSP('POSCAR'):
-    # This could be abstracted further, though the magnetic elements chosen in 
-    # detectSP are not uniquely chosen either.
-    cinfo['settings']['INCAR']['ISPIN'] = 2
-        
-#==============================================================================
-# In this section you can also make manual changes to the settings, for example:
-# if int(qid) == 167 or int(qid) == 171:
-#     cinfo['settings']['KPOINTS']['K'] = '12 12 12'
-#     cinfo['settings']['INCAR']['NKRED'] = '2'
-# cinfo['settings']['INCAR']['LSUBROT'] = '.TRUE.'
-# if int(cfile) == 10025486:
-#     cinfo['settings']['INCAR']['ALGO'] = 'A'
-#     cinfo['settings']['INCAR']['NELM'] = 30
-#     cinfo['settings']['INCAR']['TIME'] = 1.95
-# if int(cfile) == 10031153:
-#     cinfo['settings']['INCAR']['MAGMOM'] = '2*1.0000 2*-1.0000'
-#==============================================================================
+
 
 parallelSetup(cinfo['settings'])
 
