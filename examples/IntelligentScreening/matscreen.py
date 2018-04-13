@@ -58,12 +58,14 @@ inheritwavecar = True
 inheritstep = step - 1
 parent = HT.get(cinfo['parent'])
 inheritmod = None
+rescale = 1.0
+
 if parent['parent'] != '0':
     pparent = HT.getResults(parent['parent'])
     inheritmod = pparent.get('settingsmod')
     print('The following settingsmod will be inherited: ')
     print(inheritmod)
-    rescale = 1.0
+
         
 #==============================================================================
 # In this section you can also make manual changes to the settings, for example:
