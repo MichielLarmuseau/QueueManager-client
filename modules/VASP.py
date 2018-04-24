@@ -345,7 +345,7 @@ def gather(results):
         elif key == 'eos':
             eosPrepare()
             v0, e0, B, BP, residuals = eosFit()
-            results[key] = {'V0' : v0, 'E0' : e0, 'B0' : B, 'BP' : BP, 'r2' : residuals}
+            results[key] = {'V0' : v0, 'E0' : e0, 'B0' : B, 'BP' : BP, 'res' : residuals}
     return results
 
 def compress():

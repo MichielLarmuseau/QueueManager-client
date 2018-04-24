@@ -3,9 +3,9 @@
 #!/usr/bin/env python
 
 import matplotlib;
+matplotlib.use('agg')
 import seaborn;
 import numpy as np
-matplotlib.use('agg')
 import pylab as pl
 
 
