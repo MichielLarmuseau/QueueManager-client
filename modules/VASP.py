@@ -1,9 +1,10 @@
-from HighThroughput.communication.mysql import *
-from HighThroughput.utils.generic import  *
-from HighThroughput.io.VASP import *
-import os, time, shutil, subprocess, threading, sys
+from HighThroughput.utils.generic import  mkdir, execute, getNodeInfo
+from HighThroughput.utils.eos import EquationOfState
+from HighThroughput.io.VASP import rescalePOSCAR, writeINCAR, writeKPOINTS, readINCAR, readKPOINTS
+import os, time, shutil, subprocess, threading, sys, ase.io
 from HighThroughput.config import vasp
 import HighThroughput.manage.calculation as manage
+from numpy import loadtxt
 
 #cleanup function
 
@@ -277,18 +278,74 @@ def writeSettings(settings):
     writeINCAR(settings['INCAR'])
     return 0
 
+def eosPrepare(directory = None, evname = 'EOS'):
+    if directory == None:
+        directory = os.getcwd()
+    currentdir = os.getcwd()
+    os.chdir(directory)
+    os.chdir('../')
+    
+    #Setup e-v.dat
+    eos = {}
+    with open(evname,'w') as eosfile:
+        for i in os.path.listdir():
+            if os.path.isdir(i) and i.replace('.','',1).isdigit():
+                E = execute('grep \'energy  without entropy\'  OUTCAR | tail -1 | awk \'{ print $7 }\'')
+                V = execute('grep vol OUTCAR | tail -n 1 | awk \'{print $5}\'')
+                eos[i] = (E,V)
+                eosfile.write(E + ' ' + V + '\n')
+    
+    os.chdir(currentdir)
+    return eos
+
+def eosFit(directory = None, evname = 'EOS'):
+    if directory == None:
+        directory = os.getcwd()
+    currentdir = os.getcwd()
+    os.chdir(directory)
+    os.chdir('../')
+    
+    data = loadtxt(evname)
+
+    eos = EquationOfState(data[:,0], data[:,1])
+    v0, e0, B, BP, residuals = eos.fit()
+
+    outfile = open(evname.replace('.eos','') + '.eosout', 'w')
+    outfile.write('Equation Of State parameters - least square fit of a real Birch Murnaghan curve' + '\n' + '\n')
+    outfile.write('V0 \t %.5f \t A^3 \t \t %.4f \t b^3 \n' % (v0,v0/eos.b3))
+    outfile.write('E0 \t %.6f \t eV \t \t %.6f \t Ry \n' % (e0,e0/eos.Ry))
+    outfile.write('B \t %.3f \t GPa \n' % (B * eos._e * 1.0e21))
+    outfile.write('BP \t %.3f \n' % BP)
+    outfile.write('\n')
+    outfile.write('1-R^2: '+str(residuals[0])+'\n')
+    outfile.close()
+
+    eos.plot(filename='EOS.png',show=None)
+
+    os.chdir(currentdir)
+    return v0, e0, B, BP, residuals
+
 def gather(results):
     for key in results:
         if key[0:2] == 'E0':
             results[key] = float(execute('grep \'energy  without entropy\'  OUTCAR | tail -1 | awk \'{ print $7 }\''))
         elif key == 'Ehull':
             results[key] = float(execute('HTehull ./'))
+        elif key == 'Eatom':
+            #to be implemented
+            results[key] = float(execute('HTehull ./'))   
+        elif key == 'Epure':
+            #to be implemented
+            results[key] = float(execute('HTehull ./'))
+        elif key == 'cellparams':
+            crystal = ase.io.read('CONTCAR')
+            results[key] = crystal.get_cell_lengths_and_angles()	
         elif key == 'volume':
             results[key] = float(execute('grep vol OUTCAR | tail -n 1 | awk \'{print $5}\''))
-        elif key == 'volume':
-            results[key] = float(execute('grep vol OUTCAR | tail -n 1 | awk \'{print $5}\''))
-        elif key == 'volume':
-            results[key] = float(execute('grep vol OUTCAR | tail -n 1 | awk \'{print $5}\''))
+        elif key == 'eos':
+            eosPrepare()
+            v0, e0, B, BP, residuals = eosFit()
+            results[key] = {'V0' : v0, 'E0' : e0, 'B0' : B, 'BP' : BP, 'r2' : residuals}
     return results
 
 def compress():

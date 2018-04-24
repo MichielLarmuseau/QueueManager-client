@@ -79,7 +79,7 @@ def rescalePOSCAR(poscar,scale=1.0,directory=None):
             if float(scale) < 0:
                 current[1] = str(scale) + '\n'
             else:
-                current[1] = str(float(scale)*float(current[1].strip())) + '\n'
+                current[1] = str(float(scale)**(1/3)*float(current[1].strip())) + '\n'
         elif len(scale) == 3:
             for i in range(2,5):
                 newlat = [str(float(x)*float(scale[i-2])) for x in current[i].strip().split(' ') if x != '']
