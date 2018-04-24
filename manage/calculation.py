@@ -11,8 +11,10 @@ def fetchgetstart(qid):
     calcid = calc['id']
     sw = calc['software']
     stat = calc['stat']
-    calc['results'] = json.loads(calc['results'])
-    calc['settings'] = json.loads(calc['settings'])
+    if not type(calc['results']) == dict:
+        calc['results'] = json.loads(calc['results'])
+    if not type(calc['settings']) == dict:
+        calc['settings'] = json.loads(calc['settings'])
     return calc
 
 def fetch(qid):
