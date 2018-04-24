@@ -35,9 +35,6 @@ cdir = [os.path.join(qdir,'CALCULATIONS',cinfo['file'],x) for x in ['CALIB','REL
 cdir = [os.path.join(qdir,'import')] + cdir
 
 # Starting the actual calculations
-
-cinfo['settings'] = json.loads(cinfo['settings'])
-
 status = int(cinfo['stat'])
 
 print('Starting calculation ' + str(cinfo['id']) + ' on cluster: ' + cinfo['server'] + '.')
