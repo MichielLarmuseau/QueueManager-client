@@ -339,7 +339,7 @@ def gather(results):
             results[key] = float(execute('HTehull ./'))
         elif key == 'cellparams':
             crystal = ase.io.read('CONTCAR')
-            results[key] = crystal.get_cell_lengths_and_angles()	
+            results[key] = list(crystal.get_cell_lengths_and_angles())
         elif key == 'volume':
             results[key] = float(execute('grep vol OUTCAR | tail -n 1 | awk \'{print $5}\''))
         elif key == 'eos':

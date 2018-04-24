@@ -129,6 +129,7 @@ elif step == 10:
     # EOS 0.94
     inheritstep = 8
     rescale = 0.94/0.96
+    cinfo['results']['eos'] = ""
 elif step == 11:
     # Final internal relaxation
     cinfo['settings']['INCAR']['ISIF'] = 2
@@ -229,8 +230,7 @@ if 'error' in locals():
     HT.updateResults({'error':error}, cinfo['id'])
 else:
     print('Gathering results')
-    results = json.loads(cinfo['results'])
-    results = gather(results)
+    results = gather(cinfo['results'])
 
     print('Updating results.')
 # updateresults could be assumed from dictionary keys and automated.
