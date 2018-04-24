@@ -11,6 +11,8 @@ def fetchgetstart(qid):
     calcid = calc['id']
     sw = calc['software']
     stat = calc['stat']
+    calc['results'] = json.loads(calc['results'])
+    calc['settings'] = json.loads(calc['settings'])
     return calc
 
 def fetch(qid):
