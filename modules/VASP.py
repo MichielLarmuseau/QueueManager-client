@@ -317,7 +317,7 @@ def eosFit(directory = None, evname = 'EOS'):
     outfile.write('B \t %.3f \t GPa \n' % (B * eos._e * 1.0e21))
     outfile.write('BP \t %.3f \n' % BP)
     outfile.write('\n')
-    outfile.write('1-R^2: '+str(residuals[0])+'\n')
+    outfile.write('1-R^2: '+str(residuals)+'\n')
     outfile.close()
 
     eos.plot(filename='EOS.png',show=None)
