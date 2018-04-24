@@ -290,8 +290,8 @@ def eosPrepare(directory = None, evname = 'EOS'):
     with open(evname,'w') as eosfile:
         for i in os.listdir():
             if os.path.isdir(i) and i.replace('.','',1).isdigit():
-                E = execute('grep \'energy  without entropy\'  OUTCAR | tail -1 | awk \'{ print $7 }\'')
-                V = execute('grep vol OUTCAR | tail -n 1 | awk \'{print $5}\'')
+                E = execute('grep \'energy  without entropy\'  ' + i + '/OUTCAR | tail -1 | awk \'{ print $7 }\'')
+                V = execute('grep vol ' + i + '/OUTCAR | tail -n 1 | awk \'{print $5}\'')
                 eos[i] = (E,V)
                 eosfile.write(E + ' ' + V + '\n')
     
