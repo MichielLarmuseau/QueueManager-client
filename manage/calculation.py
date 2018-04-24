@@ -81,6 +81,7 @@ def modify(params):
             query += ', '
     query = query[:-2] + ' WHERE `id` = ' + str(params['id'])
     #query = query.translate(str.maketrans({"'":  r"\'"}))
+    print(query)
     result = int(bool(mysql_query(query)))
     if (result == 1):
         print('The calculation has been modified. Please verify.')
