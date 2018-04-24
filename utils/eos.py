@@ -2,8 +2,10 @@
 
 #!/usr/bin/env python
 
-
+import matplotlib;
+import seaborn;
 import numpy as np
+matplotlib.use('agg')
 import pylab as pl
 
 
