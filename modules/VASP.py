@@ -288,7 +288,7 @@ def eosPrepare(directory = None, evname = 'EOS'):
     #Setup e-v.dat
     eos = {}
     with open(evname,'w') as eosfile:
-        for i in os.path.listdir():
+        for i in os.listdir():
             if os.path.isdir(i) and i.replace('.','',1).isdigit():
                 E = execute('grep \'energy  without entropy\'  OUTCAR | tail -1 | awk \'{ print $7 }\'')
                 V = execute('grep vol OUTCAR | tail -n 1 | awk \'{print $5}\'')

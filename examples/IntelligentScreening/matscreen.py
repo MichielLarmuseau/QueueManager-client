@@ -130,7 +130,7 @@ elif step == 10:
 elif step == 11:
     # Final internal relaxation
     cinfo['settings']['INCAR']['ISIF'] = 2
-    rescale = -parent['results']['V0']
+    rescale = -parent['results']['eos']['V0']
     inheritstep = 4
 elif step == 12:
     # Final single point energy calculation
