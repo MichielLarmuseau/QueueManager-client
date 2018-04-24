@@ -49,7 +49,7 @@ class EquationOfState:
         fitdata = np.polyfit(self.v**-(2.0 / 3.), self.e, 3, full=True)
         ssr = fitdata[1]
         sst = np.sum((self.e - np.average(self.e))**2.)
-        self.residuals = ssr/sst
+        self.residuals = float(ssr/sst)
         fit0 = np.poly1d(fitdata[0])
         fit1 = np.polyder(fit0, 1) # 1st derivative of a polynomial fit0
         fit2 = np.polyder(fit1, 1)
@@ -73,7 +73,7 @@ class EquationOfState:
         self.BP = -1 - t**(-3./2.) * der3V / der2V
         self.fit0 = fit0
 
-        return self.v0, self.e0, self.B, self.BP, self.residuals[0]
+        return self.v0, self.e0, self.B, self.BP, self.residuals
 
     def plot(self, filename=None, show=None):
         """Plot fitted energy curve.
