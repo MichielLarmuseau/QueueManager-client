@@ -122,6 +122,7 @@ def updateResults(results,cid = None):
         cid = calcid
 
     if isinstance(results, dict):
+        print(results)
         results = json.dumps(results)
     elif str(results).isdigit():
         template = mysql_query('SELECT * FROM `templates` WHERE `id` = ' + str(results))
