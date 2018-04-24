@@ -2,18 +2,16 @@
 
 #!/usr/bin/env python
 
-from math import sqrt
 
 import numpy as np
 import pylab as pl
-from sys import argv
-from os import system
 
-_e = 1.60217733e-19
-b3 = 0.52917720859**3
-Ry = 13.6056923
+
 
 class EquationOfState:
+    _e = 1.60217733e-19
+    b3 = 0.52917720859**3
+    Ry = 13.6056923
     """Fit equation of state for bulk systems.
 
     The following equation is used::
@@ -98,7 +96,7 @@ class EquationOfState:
         pl.xlabel(u'volume [$\AA^3$]')
         pl.ylabel(u'energy [eV]')
         pl.title(u'E: %.3f eV, V: %.3f $\AA^3$, B: %.3f GPa, B$_P$: %.3f' %
-                  (self.e0, self.v0, self.B *_e * 1.0e21, self.BP), y = 1.02)
+                  (self.e0, self.v0, self.B *self._e * 1.0e21, self.BP), y = 1.02)
 
         if show:
             pl.show()
