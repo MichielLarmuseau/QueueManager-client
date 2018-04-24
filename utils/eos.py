@@ -73,7 +73,7 @@ class EquationOfState:
         self.BP = -1 - t**(-3./2.) * der3V / der2V
         self.fit0 = fit0
 
-        return self.v0, self.e0, self.B, self.BP, self.residuals
+        return self.v0, self.e0, self.B, self.BP, self.residuals[0]
 
     def plot(self, filename=None, show=None):
         """Plot fitted energy curve.
