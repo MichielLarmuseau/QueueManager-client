@@ -69,17 +69,18 @@ cat > ${VSC_INSTITUTE_CLUSTER}.sh << !
 
 #PBS -l pmem=4gb
 
+#PBS -lqos=debugging
+
 ulimit -s unlimited
 
 
-module load Python/$python
 module load VASP/$VASP
-module load ase
-module load HighThroughput/devel
+module load HighThroughput/edge
 module load aconvasp
 module load vsc-mympirun/3.4.2-intel-2016a-Python-2.7.11-vsc-base-2.4.17
-python /user/data/gent/gvo000/gvo00003/shared/bin/HT/devel/HighThroughput/examples/IntelligentScreening/matscreen.py $1 $2 $3 $4 $version
-
+source activate breniac
+python /user/data/gent/gvo000/gvo00003/shared/bin/HT/edge/HighThroughput/examples/IntelligentScreening/matscreen.py $1 $2 $3 $4 $version
+source deactivate
 exit 0
 !
 

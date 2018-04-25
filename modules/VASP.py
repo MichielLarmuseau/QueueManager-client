@@ -425,6 +425,6 @@ def setupKP(settings,minkp):
                 ratio = ratio+1
                 kp[i] = ratio
     
-    settings['KPOINTS']['K'] = ' '.join(kp)
+    settings['KPOINTS']['K'] = ' '.join([str(x) for x in kp])
     return settings
     
