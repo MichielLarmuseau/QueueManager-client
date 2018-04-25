@@ -31,7 +31,7 @@ if int(cinfo['id']) <= 0:
     
 #Defining directories
 qdir = os.path.join(os.getenv('VSC_SCRATCH'), 'queues', str(qid))
-cdir = [os.path.join(qdir,'CALCULATIONS',cinfo['file'],x) for x in ['CALIB','RELAX/vol','RELAX/all','EOS/1.0','EOS/1.02','EOS/0.98','EOS/1.04','EOS/0.96','EOS/1.06','EOS/0.94','RELAX/internal','ENERGY','DOS','BANDS']]
+cdir = [os.path.join(qdir,'CALCULATIONS',cinfo['file'],x) for x in ['CALIB','RELAX/vol','RELAX/all','EOSL/1.0','EOSL/1.02','EOSL/0.98','EOSL/1.04','EOSL/0.96','EOSL/1.06','EOSL/0.94','RELAX/internalL','EOSH/1.0','EOSH/1.02','EOSH/0.98','EOSH/1.04','EOSH/0.96','EOSH/1.06','EOSH/0.94','RELAX/internalH','ENERGY','DOS','BANDS']]
 cdir = [os.path.join(qdir,'import')] + cdir
 
 # Starting the actual calculations
