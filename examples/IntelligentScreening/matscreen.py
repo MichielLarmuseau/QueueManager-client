@@ -270,7 +270,7 @@ if detectSP('POSCAR'):
     cinfo['settings']['INCAR']['ISPIN'] = 2
 
 #Redivide KP AFTER initializing for settingsmod
-setupKP(settings['KPOINTS']['K'] ,minkp)
+setupKP(cinfo['settings'], minkp)
 #Setup parallellization settings
 parallelSetup(cinfo['settings'])
 
