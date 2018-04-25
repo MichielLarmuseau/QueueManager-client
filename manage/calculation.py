@@ -1,5 +1,5 @@
 from ..communication.mysql import mysql_query
-import json,os,re
+import json,os
 import HighThroughput.io.CIF as CIF
 
 calcid = 0;
@@ -37,7 +37,6 @@ def add(material,queue,priority = '',settings = None,results = None, status = 0)
         settings = json.dumps(settings)
         print('Be sure to update the software type.')
     elif str(settings).isdigit():
-        print(settings)
         template = mysql_query('SELECT * FROM `templates` WHERE `id` = ' + str(settings))
         settings = template['template']
         software = template['software']
@@ -81,7 +80,6 @@ def modify(params):
             query += ', '
     query = query[:-2] + ' WHERE `id` = ' + str(params['id'])
     #query = query.translate(str.maketrans({"'":  r"\'"}))
-    print(query)
     result = int(bool(mysql_query(query)))
     if (result == 1):
         print('The calculation has been modified. Please verify.')
@@ -122,7 +120,6 @@ def updateResults(results,cid = None):
         cid = calcid
 
     if isinstance(results, dict):
-        print(results)
         results = json.dumps(results)
     elif str(results).isdigit():
         template = mysql_query('SELECT * FROM `templates` WHERE `id` = ' + str(results))

@@ -8,7 +8,7 @@ from numpy import loadtxt
 
 #cleanup function
 
-def inherit(calc,path,contcar=True,chgcar=True,wavecar=True,settingsmod=None,rescale=1.0):
+def inherit(calc,path,contcar=True,chgcar=True,wavecar=True,settingsmod=None,grid=False,rescale=1.0):
     #pstep = int(math.ceil(float(stat)/2.)) -1
     if path == None:
         return True
@@ -53,7 +53,13 @@ def inherit(calc,path,contcar=True,chgcar=True,wavecar=True,settingsmod=None,res
                 print('Inheriting wave functions from ' + wavecar + '.')
                 shutil.copy2(wavecar, out)
                 break;
-                
+    if grid:
+        outcar = os.path.join(path, 'OUTCAR')
+        ng = execute('grep "dimension x,y,z NGX" ' + outcar + ' | head -n 1').strip().split()
+        calc['settings']['INCAR']['NGX'] = int(ng[4])
+        calc['settings']['INCAR']['NGY'] = int(ng[7])
+        calc['settings']['INCAR']['NGZ'] = int(ng[10])
+              
     if settingsmod:
         presults = manage.getResults(calc['parent'])
         presults['settingsmod'] = settingsmod

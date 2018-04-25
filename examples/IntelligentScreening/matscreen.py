@@ -55,6 +55,7 @@ inheritwavecar = True
 inheritstep = step - 1
 parent = HT.get(cinfo['parent'])
 inheritmod = None
+inheritgrid = False
 rescale = 1.0
 
 if parent['parent'] != '0':
@@ -102,45 +103,124 @@ elif step == 4:
     # EOS 1.0
     inheritstep = 3
     rescale = 1.0
+    cinfo['settings']['INCAR']['ISIF'] = 4
 elif step == 5:
     # EOS 1.02
     inheritstep = 4
+    inheritgrid = True
     rescale = 1.02
+    cinfo['settings']['INCAR']['ISIF'] = 4
 elif step == 6:
     # EOS 0.98
     inheritstep = 4
+    inheritgrid = True
     rescale = 0.98
+    cinfo['settings']['INCAR']['ISIF'] = 4
 elif step == 7:
     # EOS 1.04
     inheritstep = 5
+    inheritgrid = True
     rescale = 1.04/1.02
+    cinfo['settings']['INCAR']['ISIF'] = 4
 elif step == 8:
     # EOS 0.96
     inheritstep = 6
+    inheritgrid = True
     rescale = 0.96/0.98
+    cinfo['settings']['INCAR']['ISIF'] = 4
 elif step == 9:
     # EOS 1.06
     inheritstep = 7
+    inheritgrid = True
     rescale = 1.06/1.04
+    cinfo['settings']['INCAR']['ISIF'] = 4
 elif step == 10:
     # EOS 0.94
     inheritstep = 8
+    inheritgrid = True
     rescale = 0.94/0.96
     cinfo['results']['eos'] = ""
+    cinfo['settings']['INCAR']['ISIF'] = 4
 elif step == 11:
     # Final internal relaxation
-    cinfo['settings']['INCAR']['ISIF'] = 2
+    #CHECK SPIN HERE
+    cinfo['settings']['INCAR']['ISIF'] = 4
     rescale = -parent['results']['eos']['V0']
     inheritstep = 4
 elif step == 12:
-    # Final single point energy calculation
-    inheritstep = 12
+    # EOS 1.0
+    #TO DO CHANGE STEP
+    inheritstep = 11
+    rescale = 1.0
+    cinfo['settings']['INCAR']['ISIF'] = 2
+    cinfo['settings']['INCAR']['ENCUT'] = 520
 elif step == 13:
-    # DOS
-    inheritstep = 13
+    # EOS 1.02
+    inheritstep = 5
+    inheritchgcar = False
+    inheritwavecar = False
+    rescale = -parent['results']['volume']*1.02
+    cinfo['settings']['INCAR']['ISIF'] = 2
+    cinfo['settings']['INCAR']['ENCUT'] = 520
 elif step == 14:
+    # EOS 0.98
+    inheritstep = 6
+    inheritchgcar = False
+    inheritwavecar = False
+    rescale = -parent['results']['volume']*0.98/1.02
+    cinfo['settings']['INCAR']['ISIF'] = 2
+    cinfo['settings']['INCAR']['ENCUT'] = 520
+elif step == 15:
+    # EOS 1.04
+    inheritstep = 7
+    inheritchgcar = False
+    inheritwavecar = False
+    rescale = -parent['results']['volume']*1.04/0.98
+    cinfo['settings']['INCAR']['ISIF'] = 2
+    cinfo['settings']['INCAR']['ENCUT'] = 520
+elif step == 16:
+    # EOS 0.96
+    inheritstep = 8
+    inheritchgcar = False
+    inheritwavecar = False
+    rescale = -parent['results']['volume']*0.96/1.04
+    cinfo['settings']['INCAR']['ISIF'] = 2
+    cinfo['settings']['INCAR']['ENCUT'] = 520
+elif step == 17:
+    # EOS 1.06
+    inheritstep = 9
+    inheritchgcar = False
+    inheritwavecar = False
+    rescale = -parent['results']['volume']*1.06/0.96
+    cinfo['settings']['INCAR']['ISIF'] = 2
+    cinfo['settings']['INCAR']['ENCUT'] = 520
+elif step == 18:
+    # EOS 0.94
+    inheritstep = 10
+    inheritchgcar = False
+    inheritwavecar = False
+    rescale = -parent['results']['volume']*0.94/1.06
+    cinfo['results']['eos'] = ""
+    cinfo['settings']['INCAR']['ISIF'] = 2
+    cinfo['settings']['INCAR']['ENCUT'] = 520
+elif step == 19:
+    # Final internal relaxation
+    cinfo['settings']['INCAR']['ISIF'] = 2
+    cinfo['settings']['INCAR']['ENCUT'] = 520
+    rescale = -parent['results']['eos']['V0']
+    inheritstep = 12
+elif step == 20:
+    # Final single point energy calculation
+    cinfo['settings']['INCAR']['ENCUT'] = 520
+    inheritstep = 19
+elif step == 21:
+    # DOS
+    inheritstep = 20
+    cinfo['settings']['INCAR']['ENCUT'] = 520
+elif step == 22:
     # BANDS
-    inheritstep = 14
+    inheritstep = 21
+    cinfo['settings']['INCAR']['ENCUT'] = 520
 #cleaning up certain chgcar and wavecars in later steps might be good
  
 print('Starting step ' + str(step) + ' in ' + cdir[step] + '.')
@@ -177,7 +257,7 @@ if int( parent['settings']['continue']) > int(parent['settings']['continued']):
     cont(cinfo)
 else:
     print('Initializing job.')
-    inherit(cinfo,cdir[inheritstep],contcar = inheritcontcar,chgcar = inheritchgcar,wavecar = inheritwavecar,settingsmod = inheritmod,rescale = rescale)
+    inherit(cinfo,cdir[inheritstep],contcar = inheritcontcar,chgcar = inheritchgcar,wavecar = inheritwavecar, grid = inheritgrid, settingsmod = inheritmod,rescale = rescale)
     #Verify your potcardir, potgen should possibly just become a python function.
     initialize(cinfo['settings'])
 
@@ -250,7 +330,7 @@ cinfo['settings']['POTCAR'] = POTCAR_version.strip().replace('\n',', ')
 HT.updateSettings(cinfo['settings'], cinfo['id'])
 newcalc = int(HT.fetch(str(qid)))
 
-if newcalc > 0 and step < 9:
+if newcalc > 0 and step < 20:
     if cinfo['server'] != 'breniac':
         execute(submitscript + ' ' + str(qid) + ' ' + str(submit_arg))
     else:
