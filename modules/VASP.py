@@ -4,7 +4,7 @@ from HighThroughput.io.VASP import rescalePOSCAR, writeINCAR, writeKPOINTS, read
 import os, time, shutil, subprocess, threading, sys, ase.io
 from HighThroughput.config import vasp
 import HighThroughput.manage.calculation as manage
-from numpy import loadtxt
+from numpy import loadtxt, norm, prod
 
 #cleanup function
 
@@ -335,6 +335,22 @@ def gather(results):
     for key in results:
         if key[0:2] == 'E0':
             results[key] = float(execute('grep \'energy  without entropy\'  OUTCAR | tail -1 | awk \'{ print $7 }\''))
+            if 'atom' in key:
+                poscar = open('POSCAR','r')
+                lines = poscar.readlines()
+        
+                numberofatoms = lines[6][:-1].lstrip()
+                numberofatoms = " ".join(numberofatoms.split())
+                numberofatoms = sum(map(int, numberofatoms.split(' ')))/numberofatoms
+                results[key] /= numberofatoms
+        elif key == 'natoms':
+            poscar = open('POSCAR','r')
+            lines = poscar.readlines()
+    
+            numberofatoms = lines[6][:-1].lstrip()
+            numberofatoms = " ".join(numberofatoms.split())
+            numberofatoms = sum(map(int, numberofatoms.split(' ')))/numberofatoms
+            results[key] = numberofatoms
         elif key == 'Ehull':
             results[key] = float(execute('HTehull ./'))
         elif key == 'Eatom':
@@ -375,3 +391,39 @@ def decompress():
     if os.path.isfile('WAVECAR.gz'):
         print('Decompressing WAVECAR.gz in ' + os.getcwd() + '.')
         execute('pigz -f -d -6 -p' + str(ncore) + ' WAVECAR.gz')
+        
+def setupKP(settings,minkp):
+    crystal = ase.io.read('POSCAR')
+    cell = crystal.get_cell();
+    a = cell[0];
+    b = cell[1];
+    c = cell[2];
+    na = round(norm(a),3);
+    nb = round(norm(b),3);
+    nc = round(norm(c),3);
+    nat = crystal.get_number_of_atoms()
+    minkp /= nat
+
+    lc = [na,nb,nc]
+    kp = [int(x) for x in settings['KPOINTS']['K'].split()]
+    small = float(min(lc))
+    for i in range(0,3):
+        ratio = round(kp[i]*small/lc[i],0)
+        if ratio %2 == 0:
+            ratio = ratio+1
+            kp[i] = ratio
+
+
+    while(prod(kp) < minkp):
+        kp[0] += 2
+        kp[1] += 2
+        kp[2] += 2
+        for i in range(0,3):
+            ratio = round(kp[i]*small/lc[i],0)
+            if ratio %2 == 0:
+                ratio = ratio+1
+                kp[i] = ratio
+    
+    settings['KPOINTS']['K'] = ' '.join(kp)
+    return settings
+    

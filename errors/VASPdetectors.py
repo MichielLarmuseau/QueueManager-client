@@ -104,6 +104,7 @@ def notConverged(calc):
                 if len(current) == 1:
                     error = True
                 else:
+
                     delta = np.abs(current[-1] - current[-2])
 
                     if delta > cond:

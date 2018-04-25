@@ -31,7 +31,7 @@ if int(cinfo['id']) <= 0:
     
 #Defining directories
 qdir = os.path.join(os.getenv('VSC_SCRATCH'), 'queues', str(qid))
-cdir = [os.path.join(qdir,'CALCULATIONS',cinfo['file'],x) for x in ['CALIB','RELAX/vol','RELAX/all','EOSL/1.0','EOSL/1.02','EOSL/0.98','EOSL/1.04','EOSL/0.96','EOSL/1.06','EOSL/0.94','RELAX/internalL','EOSH/1.0','EOSH/1.02','EOSH/0.98','EOSH/1.04','EOSH/0.96','EOSH/1.06','EOSH/0.94','RELAX/internalH','ENERGY','DOS','BANDS']]
+cdir = [os.path.join(qdir,'CALCULATIONS',cinfo['file'],x) for x in ['CALIB/low','RELAX/vol','RELAX/all','EOSL/1.0','EOSL/1.02','EOSL/0.98','EOSL/1.04','EOSL/0.96','EOSL/1.06','EOSL/0.94','RELAX/internalL','CALIB/high','EOSH/1.0','EOSH/1.02','EOSH/0.98','EOSH/1.04','EOSH/0.96','EOSH/1.06','EOSH/0.94','RELAX/internalH','ENERGY','DOS','BANDS']]
 cdir = [os.path.join(qdir,'import')] + cdir
 
 # Starting the actual calculations
@@ -80,13 +80,11 @@ if parent['parent'] != '0':
 #==============================================================================
 
 #DEBUG
+minkp = 2500
 
-cinfo['settings']['INCAR']['NSW'] = 0
-cinfo['settings']['KPOINTS']['K'] = '2 2 2'
-cinfo['settings']['INCAR']['LCHARGE'] = '.TRUE.'
-cinfo['settings']['INCAR']['LWAVE'] = '.TRUE.'
-cinfo['settings']['INCAR']['ISTART'] = 1
-cinfo['settings']['INCAR']['ICHARG'] = 1
+if step > 11:
+    minkp = 10000
+
 if step == 1:
     # Calibration
     inheritstep = 0
@@ -148,13 +146,18 @@ elif step == 11:
     rescale = -parent['results']['eos']['V0']
     inheritstep = 4
 elif step == 12:
+    # High calib
+    inheritstep = 11
+    rescale = 1.0
+    cinfo['settings']['INCAR']['ENCUT'] = 520
+elif step == 13:
     # EOS 1.0
     #TO DO CHANGE STEP
-    inheritstep = 11
+    inheritstep = 12
     rescale = 1.0
     cinfo['settings']['INCAR']['ISIF'] = 2
     cinfo['settings']['INCAR']['ENCUT'] = 520
-elif step == 13:
+elif step == 14:
     # EOS 1.02
     inheritstep = 5
     inheritchgcar = False
@@ -162,7 +165,7 @@ elif step == 13:
     rescale = -parent['results']['volume']*1.02
     cinfo['settings']['INCAR']['ISIF'] = 2
     cinfo['settings']['INCAR']['ENCUT'] = 520
-elif step == 14:
+elif step == 15:
     # EOS 0.98
     inheritstep = 6
     inheritchgcar = False
@@ -170,7 +173,7 @@ elif step == 14:
     rescale = -parent['results']['volume']*0.98/1.02
     cinfo['settings']['INCAR']['ISIF'] = 2
     cinfo['settings']['INCAR']['ENCUT'] = 520
-elif step == 15:
+elif step == 16:
     # EOS 1.04
     inheritstep = 7
     inheritchgcar = False
@@ -178,7 +181,7 @@ elif step == 15:
     rescale = -parent['results']['volume']*1.04/0.98
     cinfo['settings']['INCAR']['ISIF'] = 2
     cinfo['settings']['INCAR']['ENCUT'] = 520
-elif step == 16:
+elif step == 17:
     # EOS 0.96
     inheritstep = 8
     inheritchgcar = False
@@ -186,7 +189,7 @@ elif step == 16:
     rescale = -parent['results']['volume']*0.96/1.04
     cinfo['settings']['INCAR']['ISIF'] = 2
     cinfo['settings']['INCAR']['ENCUT'] = 520
-elif step == 17:
+elif step == 18:
     # EOS 1.06
     inheritstep = 9
     inheritchgcar = False
@@ -194,7 +197,7 @@ elif step == 17:
     rescale = -parent['results']['volume']*1.06/0.96
     cinfo['settings']['INCAR']['ISIF'] = 2
     cinfo['settings']['INCAR']['ENCUT'] = 520
-elif step == 18:
+elif step == 19:
     # EOS 0.94
     inheritstep = 10
     inheritchgcar = False
@@ -203,24 +206,24 @@ elif step == 18:
     cinfo['results']['eos'] = ""
     cinfo['settings']['INCAR']['ISIF'] = 2
     cinfo['settings']['INCAR']['ENCUT'] = 520
-elif step == 19:
+elif step == 20:
     # Final internal relaxation
     cinfo['settings']['INCAR']['ISIF'] = 2
     cinfo['settings']['INCAR']['ENCUT'] = 520
     rescale = -parent['results']['eos']['V0']
     inheritstep = 12
-elif step == 20:
+elif step == 21:
     # Final single point energy calculation
     cinfo['settings']['INCAR']['ENCUT'] = 520
-    inheritstep = 19
-elif step == 21:
-    # DOS
     inheritstep = 20
-    cinfo['settings']['INCAR']['ENCUT'] = 520
-elif step == 22:
+#elif step == 22:
+    # DOS
+#    inheritstep = 21
+#    cinfo['settings']['INCAR']['ENCUT'] = 520
+#elif step == 23:
     # BANDS
-    inheritstep = 21
-    cinfo['settings']['INCAR']['ENCUT'] = 520
+#    inheritstep = 22
+#    cinfo['settings']['INCAR']['ENCUT'] = 520
 #cleaning up certain chgcar and wavecars in later steps might be good
  
 print('Starting step ' + str(step) + ' in ' + cdir[step] + '.')
@@ -266,6 +269,8 @@ if detectSP('POSCAR'):
     # detectSP are not uniquely chosen either.
     cinfo['settings']['INCAR']['ISPIN'] = 2
 
+
+setupKP(settings['KPOINTS']['K'] ,minkp)
 parallelSetup(cinfo['settings'])
 
 writeSettings(cinfo['settings'])
