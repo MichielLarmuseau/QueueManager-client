@@ -269,8 +269,9 @@ if detectSP('POSCAR'):
     # detectSP are not uniquely chosen either.
     cinfo['settings']['INCAR']['ISPIN'] = 2
 
-
+#Redivide KP AFTER initializing for settingsmod
 setupKP(settings['KPOINTS']['K'] ,minkp)
+#Setup parallellization settings
 parallelSetup(cinfo['settings'])
 
 writeSettings(cinfo['settings'])

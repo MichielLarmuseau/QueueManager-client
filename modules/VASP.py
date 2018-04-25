@@ -4,7 +4,8 @@ from HighThroughput.io.VASP import rescalePOSCAR, writeINCAR, writeKPOINTS, read
 import os, time, shutil, subprocess, threading, sys, ase.io
 from HighThroughput.config import vasp
 import HighThroughput.manage.calculation as manage
-from numpy import loadtxt, norm, prod
+from numpy import loadtxt, prod
+from numpy.linalg import norm
 
 #cleanup function
 
