@@ -414,7 +414,7 @@ def setupKP(settings,minkp):
             ratio = ratio+1
             kp[i] = ratio
 
-
+    print(kp)
     while(prod(kp) < minkp):
         kp[0] += 2
         kp[1] += 2
@@ -425,6 +425,7 @@ def setupKP(settings,minkp):
                 ratio = ratio+1
                 kp[i] = ratio
     
+    print(kp)
     settings['KPOINTS']['K'] = ' '.join([str(int(x)) for x in kp])
     return settings
     

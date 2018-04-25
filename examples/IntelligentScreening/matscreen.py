@@ -86,7 +86,8 @@ if step > 11:
     minkp = 10000
 
 if step == 1:
-    # Calibration
+    # Low Calibration
+    minkp = 0
     inheritstep = 0
 elif step == 2:
     # Vol relax
@@ -147,6 +148,7 @@ elif step == 11:
     inheritstep = 4
 elif step == 12:
     # High calib
+    minkp = 0
     inheritstep = 11
     rescale = 1.0
     cinfo['settings']['INCAR']['ENCUT'] = 520
